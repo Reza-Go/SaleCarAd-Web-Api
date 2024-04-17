@@ -21,7 +21,7 @@ services:
     image: dpage/pgadmin4
     container_name: pgadmin_container
     environment:
-      PGADMIN_DEFAULT_EMAIL: ray.dey2561@gmail.com
+      PGADMIN_DEFAULT_EMAIL: ray.dev2561@gmail.com
       PGADMIN_DEFAULT_PASSWORD: 123456
     
     volumes:
