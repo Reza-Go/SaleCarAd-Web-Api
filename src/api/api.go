@@ -1,6 +1,7 @@
 package api
 
 import (
+	middlewares "CarSaleAd-Web-Api/api/midllewares"
 	"CarSaleAd-Web-Api/api/routers"
 	validation "CarSaleAd-Web-Api/api/validations"
 	"CarSaleAd-Web-Api/config"
@@ -20,8 +21,8 @@ func InitServer() {
 	if ok {
 		val.RegisterValidation("mobile", validation.IranianMobileNumberValidator, true)
 	}
-	
-	r.Use(gin.Logger(), gin.Recovery())
+
+	r.Use(gin.Logger(), gin.Recovery() /*middlewares.TestMiddleware()*/, middlewares.LimitByRequest())
 
 	api := r.Group("/api")
 	v1 := api.Group("/v1")
