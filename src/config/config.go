@@ -12,6 +12,7 @@ type Config struct {
 	Server   ServerConfig
 	Postgres PostgresConfig
 	Redis    RedisConfig
+	Password PasswordConfig
 }
 
 type ServerConfig struct {
