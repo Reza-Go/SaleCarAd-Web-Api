@@ -27,7 +27,13 @@ redis:
   poolSize: 5000 
   poolTimeout: 240
 
-jwt: 
+password:
+  includeChars: true 
+  includeDigits: true 
+  minLength: 6 
+  maxLength: 64
+  includeUppercase: true
+  includeLowercase: true
   
 
 
