@@ -20,6 +20,7 @@ func InitServer() {
 	val, ok := binding.Validator.Engine().(*validator.Validate)
 	if ok {
 		val.RegisterValidation("mobile", validation.IranianMobileNumberValidator, true)
+		val.RegisterValidation("password", validation.PasswordValidator, true)
 	}
 
 	r.Use(gin.Logger(), gin.Recovery() /*middlewares.TestMiddleware()*/, middlewares.LimitByRequest())

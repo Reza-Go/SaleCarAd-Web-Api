@@ -1,6 +1,10 @@
 package validation
 
-import "github.com/go-playground/validator/v10"
+import (
+	"CarSaleAd-Web-Api/common"
+
+	"github.com/go-playground/validator/v10"
+)
 
 func PasswordValidator(fld validator.FieldLevel) bool {
 
@@ -11,5 +15,5 @@ func PasswordValidator(fld validator.FieldLevel) bool {
 		return false
 	}
 
-	return //
+	return common.CheckPassword(value)
 }
