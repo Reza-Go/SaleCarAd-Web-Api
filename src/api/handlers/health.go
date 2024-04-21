@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"CarSaleAd-Web-Api/api/helper"
 	"fmt"
 	"net/http"
 
@@ -15,8 +16,8 @@ func NewHealthHandler() *HealthHandler {
 }
 
 func (h *HealthHandler) Health(c *gin.Context) {
-	c.JSON(http.StatusOK, "working")
-	return
+	c.JSON(http.StatusOK, helper.GenerateBaseResponse("working", true, 0))
+
 }
 func (h *HealthHandler) HealthPostById(c *gin.Context) {
 	id := c.Params.ByName("id")
