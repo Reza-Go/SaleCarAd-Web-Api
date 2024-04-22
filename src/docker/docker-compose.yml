@@ -22,7 +22,7 @@ services:
     container_name: pgadmin_container
     environment:
       PGADMIN_DEFAULT_EMAIL: ray.dev2561@gmail.com
-      PGADMIN_DEFAULT_PASSWORD: 123456
+      PGADMIN_DEFAULT_PASSWORD: admin
     
     volumes:
       - pgadmin:/var/lib/pgadmin
