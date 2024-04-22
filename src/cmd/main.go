@@ -1,7 +1,15 @@
 package main
 
-import "CarSaleAd-Web-Api/api"
+import (
+	"CarSaleAd-Web-Api/api"
+	"CarSaleAd-Web-Api/config"
+	"CarSaleAd-Web-Api/data/cache"
+)
 
 func main() {
-	api.InitServer()
+	cfg := config.GetConfig()
+	cache.InitRedis(cfg)
+	defer cache.CloseRedis()
+	api.InitServer(cfg)
+
 }
