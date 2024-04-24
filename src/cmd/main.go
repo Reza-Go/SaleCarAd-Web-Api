@@ -5,7 +5,7 @@ import (
 	"CarSaleAd-Web-Api/config"
 	"CarSaleAd-Web-Api/data/cache"
 	"CarSaleAd-Web-Api/data/db"
-	"log"
+	"CarSaleAd-Web-Api/pkg/logging"
 )
 
 // @securityDefinitions.apikey AuthBearer
@@ -13,17 +13,18 @@ import (
 // @name Authorization
 func main() {
 	cfg := config.GetConfig()
+	logger := logging.NewLogger(cfg)
 
 	err := cache.InitRedis(cfg)
 	defer cache.CloseRedis()
 	if err != nil {
-		log.Fatal(err)
+		logger.Fatal(logging.Redis, logging.StartUp, err.Error(), nil)
 	}
 
 	err = db.InitDb(cfg)
 	defer db.CloseDb()
 	if err != nil {
-		log.Fatal(err)
+		logger.Fatal(logging.Postgres, logging.StartUp, err.Error(), nil)
 	}
 
 	api.InitServer(cfg)

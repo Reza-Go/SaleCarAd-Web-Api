@@ -2,14 +2,15 @@ package db
 
 import (
 	"CarSaleAd-Web-Api/config"
+	"CarSaleAd-Web-Api/pkg/logging"
 	"fmt"
-	"log"
 	"time"
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
 
+var logger = logging.NewLogger(config.GetConfig())
 var dbClient *gorm.DB
 
 func InitDb(cfg *config.Config) error {
@@ -32,7 +33,7 @@ func InitDb(cfg *config.Config) error {
 	sqlDb.SetMaxOpenConns(cfg.Postgres.MaxOpenConns)
 	sqlDb.SetConnMaxLifetime(cfg.Postgres.ConnMaxLifetime * time.Minute)
 
-	log.Println("Db Connection established")
+	logger.Info(logging.Postgres, logging.StartUp, "DB connection established", nil)
 	return nil
 
 }
