@@ -28,6 +28,7 @@ func InitServer(cfg *config.Config) {
 	}
 
 	//middlewares
+	r.Use(middlewares.DefaultStructuredLogger(cfg))
 	r.Use(gin.Logger(), gin.Recovery() /*middlewares.TestMiddleware()*/, middlewares.LimitByRequest())
 
 	//Routes
