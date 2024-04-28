@@ -5,6 +5,7 @@ import (
 	"CarSaleAd-Web-Api/config"
 	"CarSaleAd-Web-Api/data/cache"
 	"CarSaleAd-Web-Api/data/db"
+	"CarSaleAd-Web-Api/data/db/migrations"
 	"CarSaleAd-Web-Api/pkg/logging"
 )
 
@@ -26,6 +27,7 @@ func main() {
 	if err != nil {
 		logger.Fatal(logging.Postgres, logging.StartUp, err.Error(), nil)
 	}
+	migrations.Up_1()
 
 	api.InitServer(cfg)
 

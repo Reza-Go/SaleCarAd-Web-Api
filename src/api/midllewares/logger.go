@@ -35,13 +35,16 @@ func structuredLogger(logger logging.Logger) gin.HandlerFunc {
 		start := time.Now() //start
 		path := c.FullPath()
 		raw := c.Request.URL.RawQuery
-
+		//RequestBody
 		bodyBytes, _ := io.ReadAll(c.Request.Body)
 		c.Request.Body.Close()
 		c.Request.Body = io.NopCloser(bytes.NewBuffer(bodyBytes))
+		//ResponseBody ---need to have struct
 		c.Writer = blw
+
 		c.Next()
 
+		//move from context to param
 		param := gin.LogFormatterParams{}
 		param.TimeStamp = time.Now()               //stop
 		param.Latency = param.TimeStamp.Sub(start) // period time
@@ -56,6 +59,7 @@ func structuredLogger(logger logging.Logger) gin.HandlerFunc {
 		}
 		param.Path = path
 
+		//move from param to Keys
 		keys := map[logging.ExtraKey]interface{}{}
 		keys[logging.Path] = param.Path
 		keys[logging.ClientIP] = param.ClientIP
@@ -67,6 +71,7 @@ func structuredLogger(logger logging.Logger) gin.HandlerFunc {
 		keys[logging.RequestBody] = string(bodyBytes)
 		keys[logging.ResponseBody] = blw.body.String()
 
+		//info part is called
 		logger.Info(logging.RequestResponse, logging.Api, "", keys)
 	}
 
