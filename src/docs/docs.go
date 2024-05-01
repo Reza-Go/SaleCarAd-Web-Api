@@ -126,9 +126,68 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/v1/users/send-otp": {
+            "post": {
+                "description": "Test SendOtp",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User"
+                ],
+                "summary": "SendOtp to user",
+                "parameters": [
+                    {
+                        "description": "GetOtpRequest",
+                        "name": "Request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.GetOtpRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Done",
+                        "schema": {
+                            "$ref": "#/definitions/helper.BaseHttpResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Failed",
+                        "schema": {
+                            "$ref": "#/definitions/helper.BaseHttpResponse"
+                        }
+                    },
+                    "409": {
+                        "description": "Failed",
+                        "schema": {
+                            "$ref": "#/definitions/helper.BaseHttpResponse"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
+        "dto.GetOtpRequest": {
+            "type": "object",
+            "required": [
+                "mobileNumber"
+            ],
+            "properties": {
+                "mobileNumber": {
+                    "type": "string",
+                    "maxLength": 11,
+                    "minLength": 11
+                }
+            }
+        },
         "handlers.personData": {
             "type": "object",
             "required": [

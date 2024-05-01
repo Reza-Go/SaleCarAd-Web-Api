@@ -41,6 +41,9 @@ func InitServer(cfg *config.Config) {
 		test_router := v1.Group("/test")
 		routers.TestRouter(test_router)
 
+		user_router := v1.Group("/users")
+		routers.User(user_router, cfg)
+
 	}
 	//Swagger
 	RegisterSwagger(r, cfg)
