@@ -8,7 +8,9 @@ import (
 	"CarSaleAd-Web-Api/data/db"
 	"CarSaleAd-Web-Api/data/models"
 	"CarSaleAd-Web-Api/pkg/logging"
+	"CarSaleAd-Web-Api/pkg/service_errors"
 
+	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
 )
 
@@ -28,6 +30,61 @@ func NewUserService(cfg *config.Config) *UserService {
 		database:   database,
 		OtpService: NewOtpService(cfg),
 	}
+}
+
+// Register by Username
+func (s *UserService) RegisterByUsername(req dto.RegisterUserByUsernameRequest) error {
+	u := models.User{
+		FirstName: req.FirstName,
+		LastName:  req.LastName,
+		Username:  req.Username,
+		Email:     req.Email,
+	}
+	exists, err := s.existsByEmail(req.Email)
+	if err != nil {
+		return err
+	}
+	if exists {
+		return &service_errors.ServiceError{EndUserMessage: service_errors.EmailExists}
+	}
+	exists, err = s.existsByUsername(req.Username)
+	if err != nil {
+		return err
+	}
+	if exists {
+		return &service_errors.ServiceError{EndUserMessage: service_errors.UsernameExists}
+	}
+	//string >>>byte
+	bp := []byte(req.Password)
+	//hash passwrod
+	hp, err := bcrypt.GenerateFromPassword(bp, bcrypt.DefaultCost)
+	if err != nil {
+		s.logger.Error(logging.Internal, logging.HashPassword, err.Error(), nil)
+		return err
+	}
+	u.Password = string(hp)
+	roleId, err := s.getDefaultRole()
+	if err != nil {
+		s.logger.Error(logging.Postgres, logging.DefaultRoleNotFound, err.Error(), nil)
+		return err
+	}
+	//start transaction 
+	tx := s.database.Begin()
+	err = tx.Create(&u).Error
+	if err != nil {
+		tx.Rollback()
+		s.logger.Error(logging.Postgres, logging.Rollback, err.Error(), nil)
+		return err
+	}
+	err = tx.Create(&models.UserRole{RoleId: roleId, UserId: u.Id}).Error
+	if err != nil {
+		tx.Rollback()
+		s.logger.Error(logging.Postgres, logging.Rollback, err.Error(), nil)
+		return err
+	}
+	tx.Commit()
+	return nil
+
 }
 
 func (s *UserService) SendOtp(req *dto.GetOtpRequest) error {
