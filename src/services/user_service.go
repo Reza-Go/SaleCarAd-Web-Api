@@ -15,10 +15,11 @@ import (
 )
 
 type UserService struct {
-	logger     logging.Logger
-	cfg        *config.Config
-	OtpService *OtpService
-	database   *gorm.DB
+	logger       logging.Logger
+	cfg          *config.Config
+	OtpService   *OtpService
+	tokenService *TokenService
+	database     *gorm.DB
 }
 
 func NewUserService(cfg *config.Config) *UserService {
@@ -68,7 +69,7 @@ func (s *UserService) RegisterByUsername(req dto.RegisterUserByUsernameRequest) 
 		s.logger.Error(logging.Postgres, logging.DefaultRoleNotFound, err.Error(), nil)
 		return err
 	}
-	//start transaction 
+	//start transaction
 	tx := s.database.Begin()
 	err = tx.Create(&u).Error
 	if err != nil {
@@ -85,6 +86,48 @@ func (s *UserService) RegisterByUsername(req dto.RegisterUserByUsernameRequest) 
 	tx.Commit()
 	return nil
 
+}
+
+// Register or login by mobile number
+func (s *UserService) RegisterLoginByMobileNumber(req dto.RegisterLoginByMobileRequest) (*dto.TokenDetail, error) {
+	err := s.OtpService.ValidateOtp(req.MobileNumber, req.Otp)
+	if err != nil {
+		return nil, err
+	}
+	exists, err := s.existsByMobileNumber(req.MobileNumber)
+	if err != nil {
+		return nil, err
+	}
+
+	u := models.User{MobileNumber: req.MobileNumber, Username: req.MobileNumber}
+	if exists {
+		var user models.User
+		err = s.database.
+			Model(&models.User{}).
+			Where("username = ?", u.Username).
+			Preload("UserRoles", func(tx *gorm.DB) *gorm.DB {
+				return tx.Preload("Role")
+
+			}).Find(&user).Error
+		if err != nil {
+			return nil, err
+		}
+		tdto := tokenDto{UserId: user.Id, FirstName: user.FirstName, LastName: user.LastName,
+			Email: user.Email, MobileNumber: user.MobileNumber}
+		if len(*user.UserRoles) > 0 {
+			for _, ur := range *user.UserRoles {
+				tdto.Roles = append(tdto.Roles, ur.Role.Name)
+			}
+		}
+		token, err := s.tokenService.GenerateToken(&tdto)
+		if err != nil {
+			return nil, err
+		}
+		return token, nil
+
+	} else {
+		
+	}
 }
 
 func (s *UserService) SendOtp(req *dto.GetOtpRequest) error {

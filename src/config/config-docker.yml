@@ -38,7 +38,7 @@ password:
   includeChars: true 
   includeDigits: true 
   minLength: 6 
-  maxLength: 64
+  maxLength: 20
   includeUppercase: true
   includeLowercase: true
 
