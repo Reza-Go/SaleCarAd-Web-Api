@@ -100,6 +100,7 @@ func (s *UserService) RegisterLoginByMobileNumber(req dto.RegisterLoginByMobileR
 	}
 
 	u := models.User{MobileNumber: req.MobileNumber, Username: req.MobileNumber}
+	//MObile exist >>>Login
 	if exists {
 		var user models.User
 		err = s.database.
@@ -125,9 +126,68 @@ func (s *UserService) RegisterLoginByMobileNumber(req dto.RegisterLoginByMobileR
 		}
 		return token, nil
 
-	} else {
-		
+		//Mobile Number does not exist >>>Register
+		//Create Password
 	}
+	bp := []byte(common.GeneratePassword())
+	hp, err := bcrypt.GenerateFromPassword(bp, bcrypt.DefaultCost)
+	if err != nil {
+		s.logger.Error(logging.General, logging.HashPassword, err.Error(), nil)
+		return nil, err
+	}
+	u.Password = string(hp)
+	roleId, err := s.getDefaultRole()
+	if err != nil {
+		s.logger.Error(logging.Postgres, logging.DefaultRoleNotFound, err.Error(), nil)
+		return nil, err
+	}
+
+	//Create User And UserRoles
+
+	tx := s.database.Begin()
+	err = tx.Create(&u).Error
+	if err != nil {
+		tx.Rollback()
+		s.logger.Error(logging.Postgres, logging.Rollback, err.Error(), nil)
+		return nil, err
+	}
+	err = tx.Create(&models.UserRole{RoleId: roleId, UserId: u.Id}).Error
+	if err != nil {
+		tx.Rollback()
+		s.logger.Error(logging.Postgres, logging.Rollback, err.Error(), nil)
+		return nil, err
+	}
+	tx.Commit()
+
+	//Create TokenDto and Token
+
+	var user models.User
+	err = s.database.
+		Model(&models.User{}).
+		Where("username = ?", u.Username).
+		Preload("UserRoles", func(tx *gorm.DB) *gorm.DB {
+			return tx.Preload("Role")
+		}).
+		Find(&user).Error
+	if err != nil {
+		return nil, err
+	}
+	tdto := tokenDto{UserId: user.Id, FirstName: user.FirstName, LastName: user.LastName,
+		MobileNumber: user.MobileNumber, Email: user.Email}
+
+	if len(*user.UserRoles) > 0 {
+		for _, ur := range *user.UserRoles {
+			tdto.Roles = append(tdto.Roles, ur.Role.Name)
+		}
+
+	}
+
+	token, err := s.tokenService.GenerateToken(&tdto)
+	if err != nil {
+		return nil, err
+	}
+	return token, nil
+
 }
 
 func (s *UserService) SendOtp(req *dto.GetOtpRequest) error {
