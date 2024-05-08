@@ -33,6 +33,39 @@ func NewUserService(cfg *config.Config) *UserService {
 	}
 }
 
+// login By Username
+func (s *UserService) LoginByUsername(req dto.LoginByUsernameRequest) (*dto.TokenDetail, error) {
+	var user models.User
+	err := s.database.
+		Model(&models.User{}).
+		Where("username = ?", req.Username).
+		Preload("UserRoles", func(tx *gorm.DB) *gorm.DB {
+			return tx.Preload("Role")
+		}).Find(&user).Error
+	if err != nil {
+		return nil, err
+	}
+	err = bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(req.Password))
+	if err != nil {
+		return nil, err
+	}
+	//Password Correct then create TokenDto and Token
+	tdto := tokenDto{UserId: user.Id, FirstName: user.FirstName, LastName: user.LastName,
+		Email: user.Email, MobileNumber: user.MobileNumber}
+
+	if len(*user.UserRoles) > 0 {
+		for _, ur := range *user.UserRoles {
+			tdto.Roles = append(tdto.Roles, ur.Role.Name)
+		}
+	}
+
+	token, err := s.tokenService.GenerateToken(&tdto)
+	if err != nil {
+		return nil, err
+	}
+	return token, nil
+}
+
 // Register by Username
 func (s *UserService) RegisterByUsername(req dto.RegisterUserByUsernameRequest) error {
 	u := models.User{
@@ -69,7 +102,7 @@ func (s *UserService) RegisterByUsername(req dto.RegisterUserByUsernameRequest) 
 		s.logger.Error(logging.Postgres, logging.DefaultRoleNotFound, err.Error(), nil)
 		return err
 	}
-	//start transaction
+	//start transaction Create User and UserRoles
 	tx := s.database.Begin()
 	err = tx.Create(&u).Error
 	if err != nil {
@@ -100,7 +133,7 @@ func (s *UserService) RegisterLoginByMobileNumber(req dto.RegisterLoginByMobileR
 	}
 
 	u := models.User{MobileNumber: req.MobileNumber, Username: req.MobileNumber}
-	//MObile exist >>>Login
+	//MObile exist >>>Login>>>Check User >>>Create TokenDto and Token
 	if exists {
 		var user models.User
 		err = s.database.
