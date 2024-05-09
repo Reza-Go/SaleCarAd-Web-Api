@@ -26,15 +26,16 @@ func NewUserService(cfg *config.Config) *UserService {
 	database := db.GetDb()
 	logger := logging.NewLogger(cfg)
 	return &UserService{
-		cfg:        cfg,
-		logger:     logger,
-		database:   database,
-		OtpService: NewOtpService(cfg),
+		cfg:          cfg,
+		logger:       logger,
+		database:     database,
+		OtpService:   NewOtpService(cfg),
+		tokenService: NewTokenService(cfg),
 	}
 }
 
 // login By Username
-func (s *UserService) LoginByUsername(req dto.LoginByUsernameRequest) (*dto.TokenDetail, error) {
+func (s *UserService) LoginByUsername(req *dto.LoginByUsernameRequest) (*dto.TokenDetail, error) {
 	var user models.User
 	err := s.database.
 		Model(&models.User{}).
@@ -67,7 +68,7 @@ func (s *UserService) LoginByUsername(req dto.LoginByUsernameRequest) (*dto.Toke
 }
 
 // Register by Username
-func (s *UserService) RegisterByUsername(req dto.RegisterUserByUsernameRequest) error {
+func (s *UserService) RegisterByUsername(req *dto.RegisterUserByUsernameRequest) error {
 	u := models.User{
 		FirstName: req.FirstName,
 		LastName:  req.LastName,
@@ -122,7 +123,7 @@ func (s *UserService) RegisterByUsername(req dto.RegisterUserByUsernameRequest) 
 }
 
 // Register or login by mobile number
-func (s *UserService) RegisterLoginByMobileNumber(req dto.RegisterLoginByMobileRequest) (*dto.TokenDetail, error) {
+func (s *UserService) RegisterLoginByMobileNumber(req *dto.RegisterLoginByMobileRequest) (*dto.TokenDetail, error) {
 	err := s.OtpService.ValidateOtp(req.MobileNumber, req.Otp)
 	if err != nil {
 		return nil, err
