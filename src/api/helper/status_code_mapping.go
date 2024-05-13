@@ -15,6 +15,8 @@ var StatusCodeMapping = map[string]int{
 	//User
 	service_errors.EmailExists:    409,
 	service_errors.UsernameExists: 409,
+
+	service_errors.RecordNotFound: 404,
 }
 
 func TranslateErrorToStatusCode(err error) int {

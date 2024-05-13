@@ -12,3 +12,5 @@ const TokenInvalid = "Token invalid"
 
 const EmailExists = "Email exists"
 const UsernameExists = "Username exists"
+
+const RecordNotFound = "record not found"
