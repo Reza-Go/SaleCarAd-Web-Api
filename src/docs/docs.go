@@ -37,7 +37,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/dto.CreateUpdateCountryRequest"
+                            "$ref": "#/definitions/CarSaleAd-Web-Api_api_dto.CreateUpdateCountryRequest"
                         }
                     }
                 ],
@@ -47,13 +47,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/helper.BaseHttpResponse"
+                                    "$ref": "#/definitions/CarSaleAd-Web-Api_api_helper.BaseHttpResponse"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "result": {
-                                            "$ref": "#/definitions/dto.CountryResponse"
+                                            "$ref": "#/definitions/CarSaleAd-Web-Api_api_dto.CountryResponse"
                                         }
                                     }
                                 }
@@ -63,7 +63,61 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad request",
                         "schema": {
-                            "$ref": "#/definitions/helper.BaseHttpResponse"
+                            "$ref": "#/definitions/CarSaleAd-Web-Api_api_helper.BaseHttpResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/countries/get-by-filter": {
+            "post": {
+                "security": [
+                    {
+                        "AuthBearer": []
+                    }
+                ],
+                "description": "Get Countries",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Country"
+                ],
+                "summary": "Get Countries",
+                "parameters": [
+                    {
+                        "description": "Request",
+                        "name": "Request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/CarSaleAd-Web-Api_api_dto.PaginationInputWithFilter"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Country Response",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/CarSaleAd-Web-Api_api_helper.BaseHttpResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "result": {
+                                            "$ref": "#/definitions/CarSaleAd-Web-Api_api_dto.PagedList-CarSaleAd-Web-Api_api_dto_CountryResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "$ref": "#/definitions/CarSaleAd-Web-Api_api_helper.BaseHttpResponse"
                         }
                     }
                 }
@@ -99,13 +153,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/helper.BaseHttpResponse"
+                                    "$ref": "#/definitions/CarSaleAd-Web-Api_api_helper.BaseHttpResponse"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "result": {
-                                            "$ref": "#/definitions/dto.CountryResponse"
+                                            "$ref": "#/definitions/CarSaleAd-Web-Api_api_dto.CountryResponse"
                                         }
                                     }
                                 }
@@ -115,7 +169,7 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad request",
                         "schema": {
-                            "$ref": "#/definitions/helper.BaseHttpResponse"
+                            "$ref": "#/definitions/CarSaleAd-Web-Api_api_helper.BaseHttpResponse"
                         }
                     }
                 }
@@ -148,23 +202,23 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/dto.CreateUpdateCountryRequest"
+                            "$ref": "#/definitions/CarSaleAd-Web-Api_api_dto.CreateUpdateCountryRequest"
                         }
                     }
                 ],
                 "responses": {
-                    "201": {
+                    "200": {
                         "description": "Country response",
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/helper.BaseHttpResponse"
+                                    "$ref": "#/definitions/CarSaleAd-Web-Api_api_helper.BaseHttpResponse"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "result": {
-                                            "$ref": "#/definitions/dto.CountryResponse"
+                                            "$ref": "#/definitions/CarSaleAd-Web-Api_api_dto.CountryResponse"
                                         }
                                     }
                                 }
@@ -174,7 +228,7 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad request",
                         "schema": {
-                            "$ref": "#/definitions/helper.BaseHttpResponse"
+                            "$ref": "#/definitions/CarSaleAd-Web-Api_api_helper.BaseHttpResponse"
                         }
                     }
                 }
@@ -203,16 +257,16 @@ const docTemplate = `{
                     }
                 ],
                 "responses": {
-                    "201": {
+                    "200": {
                         "description": "Response",
                         "schema": {
-                            "$ref": "#/definitions/helper.BaseHttpResponse"
+                            "$ref": "#/definitions/CarSaleAd-Web-Api_api_helper.BaseHttpResponse"
                         }
                     },
                     "400": {
                         "description": "Bad request",
                         "schema": {
-                            "$ref": "#/definitions/helper.BaseHttpResponse"
+                            "$ref": "#/definitions/CarSaleAd-Web-Api_api_helper.BaseHttpResponse"
                         }
                     }
                 }
@@ -235,13 +289,13 @@ const docTemplate = `{
                     "200": {
                         "description": "Done",
                         "schema": {
-                            "$ref": "#/definitions/helper.BaseHttpResponse"
+                            "$ref": "#/definitions/CarSaleAd-Web-Api_api_helper.BaseHttpResponse"
                         }
                     },
                     "400": {
                         "description": "Failed",
                         "schema": {
-                            "$ref": "#/definitions/helper.BaseHttpResponse"
+                            "$ref": "#/definitions/CarSaleAd-Web-Api_api_helper.BaseHttpResponse"
                         }
                     }
                 }
@@ -272,7 +326,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/handlers.personData"
+                            "$ref": "#/definitions/api_handlers.personData"
                         }
                     }
                 ],
@@ -280,13 +334,13 @@ const docTemplate = `{
                     "200": {
                         "description": "Done",
                         "schema": {
-                            "$ref": "#/definitions/helper.BaseHttpResponse"
+                            "$ref": "#/definitions/CarSaleAd-Web-Api_api_helper.BaseHttpResponse"
                         }
                     },
                     "400": {
                         "description": "Failed",
                         "schema": {
-                            "$ref": "#/definitions/helper.BaseHttpResponse"
+                            "$ref": "#/definitions/CarSaleAd-Web-Api_api_helper.BaseHttpResponse"
                         }
                     }
                 }
@@ -318,13 +372,13 @@ const docTemplate = `{
                     "200": {
                         "description": "Done",
                         "schema": {
-                            "$ref": "#/definitions/helper.BaseHttpResponse"
+                            "$ref": "#/definitions/CarSaleAd-Web-Api_api_helper.BaseHttpResponse"
                         }
                     },
                     "400": {
                         "description": "Failed",
                         "schema": {
-                            "$ref": "#/definitions/helper.BaseHttpResponse"
+                            "$ref": "#/definitions/CarSaleAd-Web-Api_api_helper.BaseHttpResponse"
                         }
                     }
                 }
@@ -350,7 +404,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/dto.RegisterLoginByMobileRequest"
+                            "$ref": "#/definitions/CarSaleAd-Web-Api_api_dto.RegisterLoginByMobileRequest"
                         }
                     }
                 ],
@@ -358,19 +412,19 @@ const docTemplate = `{
                     "201": {
                         "description": "Done",
                         "schema": {
-                            "$ref": "#/definitions/helper.BaseHttpResponse"
+                            "$ref": "#/definitions/CarSaleAd-Web-Api_api_helper.BaseHttpResponse"
                         }
                     },
                     "400": {
                         "description": "Failed",
                         "schema": {
-                            "$ref": "#/definitions/helper.BaseHttpResponse"
+                            "$ref": "#/definitions/CarSaleAd-Web-Api_api_helper.BaseHttpResponse"
                         }
                     },
                     "409": {
                         "description": "Failed",
                         "schema": {
-                            "$ref": "#/definitions/helper.BaseHttpResponse"
+                            "$ref": "#/definitions/CarSaleAd-Web-Api_api_helper.BaseHttpResponse"
                         }
                     }
                 }
@@ -396,7 +450,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/dto.LoginByUsernameRequest"
+                            "$ref": "#/definitions/CarSaleAd-Web-Api_api_dto.LoginByUsernameRequest"
                         }
                     }
                 ],
@@ -404,19 +458,19 @@ const docTemplate = `{
                     "201": {
                         "description": "Done",
                         "schema": {
-                            "$ref": "#/definitions/helper.BaseHttpResponse"
+                            "$ref": "#/definitions/CarSaleAd-Web-Api_api_helper.BaseHttpResponse"
                         }
                     },
                     "400": {
                         "description": "Failed",
                         "schema": {
-                            "$ref": "#/definitions/helper.BaseHttpResponse"
+                            "$ref": "#/definitions/CarSaleAd-Web-Api_api_helper.BaseHttpResponse"
                         }
                     },
                     "409": {
                         "description": "Failed",
                         "schema": {
-                            "$ref": "#/definitions/helper.BaseHttpResponse"
+                            "$ref": "#/definitions/CarSaleAd-Web-Api_api_helper.BaseHttpResponse"
                         }
                     }
                 }
@@ -442,7 +496,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/dto.RegisterUserByUsernameRequest"
+                            "$ref": "#/definitions/CarSaleAd-Web-Api_api_dto.RegisterUserByUsernameRequest"
                         }
                     }
                 ],
@@ -450,19 +504,19 @@ const docTemplate = `{
                     "201": {
                         "description": "Done",
                         "schema": {
-                            "$ref": "#/definitions/helper.BaseHttpResponse"
+                            "$ref": "#/definitions/CarSaleAd-Web-Api_api_helper.BaseHttpResponse"
                         }
                     },
                     "400": {
                         "description": "Failed",
                         "schema": {
-                            "$ref": "#/definitions/helper.BaseHttpResponse"
+                            "$ref": "#/definitions/CarSaleAd-Web-Api_api_helper.BaseHttpResponse"
                         }
                     },
                     "409": {
                         "description": "Failed",
                         "schema": {
-                            "$ref": "#/definitions/helper.BaseHttpResponse"
+                            "$ref": "#/definitions/CarSaleAd-Web-Api_api_helper.BaseHttpResponse"
                         }
                     }
                 }
@@ -488,7 +542,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/dto.GetOtpRequest"
+                            "$ref": "#/definitions/CarSaleAd-Web-Api_api_dto.GetOtpRequest"
                         }
                     }
                 ],
@@ -496,19 +550,19 @@ const docTemplate = `{
                     "201": {
                         "description": "Done",
                         "schema": {
-                            "$ref": "#/definitions/helper.BaseHttpResponse"
+                            "$ref": "#/definitions/CarSaleAd-Web-Api_api_helper.BaseHttpResponse"
                         }
                     },
                     "400": {
                         "description": "Failed",
                         "schema": {
-                            "$ref": "#/definitions/helper.BaseHttpResponse"
+                            "$ref": "#/definitions/CarSaleAd-Web-Api_api_helper.BaseHttpResponse"
                         }
                     },
                     "409": {
                         "description": "Failed",
                         "schema": {
-                            "$ref": "#/definitions/helper.BaseHttpResponse"
+                            "$ref": "#/definitions/CarSaleAd-Web-Api_api_helper.BaseHttpResponse"
                         }
                     }
                 }
@@ -516,9 +570,12 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "dto.CountryResponse": {
+        "CarSaleAd-Web-Api_api_dto.CityResponse": {
             "type": "object",
             "properties": {
+                "country": {
+                    "$ref": "#/definitions/CarSaleAd-Web-Api_api_dto.CountryResponse"
+                },
                 "id": {
                     "type": "integer"
                 },
@@ -527,7 +584,24 @@ const docTemplate = `{
                 }
             }
         },
-        "dto.CreateUpdateCountryRequest": {
+        "CarSaleAd-Web-Api_api_dto.CountryResponse": {
+            "type": "object",
+            "properties": {
+                "cities": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/CarSaleAd-Web-Api_api_dto.CityResponse"
+                    }
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "CarSaleAd-Web-Api_api_dto.CreateUpdateCountryRequest": {
             "type": "object",
             "required": [
                 "name"
@@ -540,7 +614,24 @@ const docTemplate = `{
                 }
             }
         },
-        "dto.GetOtpRequest": {
+        "CarSaleAd-Web-Api_api_dto.Filter": {
+            "type": "object",
+            "properties": {
+                "filterType": {
+                    "type": "string"
+                },
+                "from": {
+                    "type": "string"
+                },
+                "to": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string"
+                }
+            }
+        },
+        "CarSaleAd-Web-Api_api_dto.GetOtpRequest": {
             "type": "object",
             "required": [
                 "mobileNumber"
@@ -553,7 +644,7 @@ const docTemplate = `{
                 }
             }
         },
-        "dto.LoginByUsernameRequest": {
+        "CarSaleAd-Web-Api_api_dto.LoginByUsernameRequest": {
             "type": "object",
             "required": [
                 "password",
@@ -570,7 +661,56 @@ const docTemplate = `{
                 }
             }
         },
-        "dto.RegisterLoginByMobileRequest": {
+        "CarSaleAd-Web-Api_api_dto.PagedList-CarSaleAd-Web-Api_api_dto_CountryResponse": {
+            "type": "object",
+            "properties": {
+                "hasNextPage": {
+                    "type": "boolean"
+                },
+                "hasPreviousPage": {
+                    "type": "boolean"
+                },
+                "items": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/CarSaleAd-Web-Api_api_dto.CountryResponse"
+                    }
+                },
+                "pageNumber": {
+                    "type": "integer"
+                },
+                "totalPages": {
+                    "type": "integer"
+                },
+                "totalRows": {
+                    "type": "integer"
+                }
+            }
+        },
+        "CarSaleAd-Web-Api_api_dto.PaginationInputWithFilter": {
+            "type": "object",
+            "properties": {
+                "filter": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "$ref": "#/definitions/CarSaleAd-Web-Api_api_dto.Filter"
+                    }
+                },
+                "pageNumber": {
+                    "type": "integer"
+                },
+                "pageSize": {
+                    "type": "integer"
+                },
+                "sort": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/CarSaleAd-Web-Api_api_dto.Sort"
+                    }
+                }
+            }
+        },
+        "CarSaleAd-Web-Api_api_dto.RegisterLoginByMobileRequest": {
             "type": "object",
             "required": [
                 "mobileNumber",
@@ -589,7 +729,7 @@ const docTemplate = `{
                 }
             }
         },
-        "dto.RegisterUserByUsernameRequest": {
+        "CarSaleAd-Web-Api_api_dto.RegisterUserByUsernameRequest": {
             "type": "object",
             "required": [
                 "firstName",
@@ -620,7 +760,54 @@ const docTemplate = `{
                 }
             }
         },
-        "handlers.personData": {
+        "CarSaleAd-Web-Api_api_dto.Sort": {
+            "type": "object",
+            "properties": {
+                "col_id": {
+                    "type": "string"
+                },
+                "sort": {
+                    "type": "string"
+                }
+            }
+        },
+        "CarSaleAd-Web-Api_api_helper.BaseHttpResponse": {
+            "type": "object",
+            "properties": {
+                "error": {},
+                "result": {},
+                "resultCode": {
+                    "type": "integer"
+                },
+                "success": {
+                    "type": "boolean"
+                },
+                "validationErrors": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/CarSaleAd-Web-Api_api_validations.ValidationError"
+                    }
+                }
+            }
+        },
+        "CarSaleAd-Web-Api_api_validations.ValidationError": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "property": {
+                    "type": "string"
+                },
+                "tag": {
+                    "type": "string"
+                },
+                "value": {
+                    "type": "string"
+                }
+            }
+        },
+        "api_handlers.personData": {
             "type": "object",
             "required": [
                 "first_name",
@@ -642,42 +829,6 @@ const docTemplate = `{
                     "type": "string",
                     "maxLength": 11,
                     "minLength": 11
-                }
-            }
-        },
-        "helper.BaseHttpResponse": {
-            "type": "object",
-            "properties": {
-                "error": {},
-                "result": {},
-                "resultCode": {
-                    "type": "integer"
-                },
-                "success": {
-                    "type": "boolean"
-                },
-                "validationErrors": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/validation.ValidationError"
-                    }
-                }
-            }
-        },
-        "validation.ValidationError": {
-            "type": "object",
-            "properties": {
-                "message": {
-                    "type": "string"
-                },
-                "property": {
-                    "type": "string"
-                },
-                "tag": {
-                    "type": "string"
-                },
-                "value": {
-                    "type": "string"
                 }
             }
         }
