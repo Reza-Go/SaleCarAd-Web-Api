@@ -39,6 +39,19 @@ definitions:
     required:
     - name
     type: object
+  CarSaleAd-Web-Api_api_dto.FileResponse:
+    properties:
+      description:
+        type: string
+      directory:
+        type: string
+      id:
+        type: integer
+      mimeType:
+        type: string
+      name:
+        type: string
+    type: object
   CarSaleAd-Web-Api_api_dto.Filter:
     properties:
       filterType:
@@ -105,6 +118,23 @@ definitions:
       totalRows:
         type: integer
     type: object
+  CarSaleAd-Web-Api_api_dto.PagedList-CarSaleAd-Web-Api_api_dto_FileResponse:
+    properties:
+      hasNextPage:
+        type: boolean
+      hasPreviousPage:
+        type: boolean
+      items:
+        items:
+          $ref: '#/definitions/CarSaleAd-Web-Api_api_dto.FileResponse'
+        type: array
+      pageNumber:
+        type: integer
+      totalPages:
+        type: integer
+      totalRows:
+        type: integer
+    type: object
   CarSaleAd-Web-Api_api_dto.PaginationInputWithFilter:
     properties:
       filter:
@@ -162,6 +192,11 @@ definitions:
       col_id:
         type: string
       sort:
+        type: string
+    type: object
+  CarSaleAd-Web-Api_api_dto.UpdateFileRequest:
+    properties:
+      description:
         type: string
     type: object
   CarSaleAd-Web-Api_api_helper.BaseHttpResponse:
@@ -512,6 +547,160 @@ paths:
       summary: Get Countries
       tags:
       - Country
+  /v1/files/:
+    post:
+      consumes:
+      - application/x-www-form-urlencoded
+      description: Create a File
+      parameters:
+      - in: formData
+        name: description
+        required: true
+        type: string
+      - description: Create a File
+        in: formData
+        name: file
+        required: true
+        type: file
+      responses:
+        "201":
+          description: File response
+          schema:
+            allOf:
+            - $ref: '#/definitions/CarSaleAd-Web-Api_api_helper.BaseHttpResponse'
+            - properties:
+                result:
+                  $ref: '#/definitions/CarSaleAd-Web-Api_api_dto.FileResponse'
+              type: object
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/CarSaleAd-Web-Api_api_helper.BaseHttpResponse'
+      security:
+      - AuthBearer: []
+      summary: Create a File
+      tags:
+      - File
+  /v1/files/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a File
+      parameters:
+      - description: Id
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: response
+          schema:
+            $ref: '#/definitions/CarSaleAd-Web-Api_api_helper.BaseHttpResponse'
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/CarSaleAd-Web-Api_api_helper.BaseHttpResponse'
+      security:
+      - AuthBearer: []
+      summary: Delete a File
+      tags:
+      - File
+    get:
+      consumes:
+      - application/json
+      description: Get a File
+      parameters:
+      - description: Id
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: File Response
+          schema:
+            allOf:
+            - $ref: '#/definitions/CarSaleAd-Web-Api_api_helper.BaseHttpResponse'
+            - properties:
+                result:
+                  $ref: '#/definitions/CarSaleAd-Web-Api_api_dto.FileResponse'
+              type: object
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/CarSaleAd-Web-Api_api_helper.BaseHttpResponse'
+      security:
+      - AuthBearer: []
+      summary: Get a File
+      tags:
+      - File
+    put:
+      consumes:
+      - application/json
+      description: Update a File
+      parameters:
+      - description: Id
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Update a File
+        in: body
+        name: Request
+        required: true
+        schema:
+          $ref: '#/definitions/CarSaleAd-Web-Api_api_dto.UpdateFileRequest'
+      responses:
+        "200":
+          description: File response
+          schema:
+            allOf:
+            - $ref: '#/definitions/CarSaleAd-Web-Api_api_helper.BaseHttpResponse'
+            - properties:
+                result:
+                  $ref: '#/definitions/CarSaleAd-Web-Api_api_dto.FileResponse'
+              type: object
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/CarSaleAd-Web-Api_api_helper.BaseHttpResponse'
+      security:
+      - AuthBearer: []
+      summary: Update a File
+      tags:
+      - File
+  /v1/files/get-by-filter:
+    post:
+      consumes:
+      - application/json
+      description: Get Files
+      parameters:
+      - description: Request
+        in: body
+        name: Request
+        required: true
+        schema:
+          $ref: '#/definitions/CarSaleAd-Web-Api_api_dto.PaginationInputWithFilter'
+      responses:
+        "200":
+          description: File Response
+          schema:
+            allOf:
+            - $ref: '#/definitions/CarSaleAd-Web-Api_api_helper.BaseHttpResponse'
+            - properties:
+                result:
+                  $ref: '#/definitions/CarSaleAd-Web-Api_api_dto.PagedList-CarSaleAd-Web-Api_api_dto_FileResponse'
+              type: object
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/CarSaleAd-Web-Api_api_helper.BaseHttpResponse'
+      security:
+      - AuthBearer: []
+      summary: Get Files
+      tags:
+      - File
   /v1/health/:
     get:
       consumes:
