@@ -1,12 +1,10 @@
 package handlers
 
 import (
-	"CarSaleAd-Web-Api/api/dto"
-	"CarSaleAd-Web-Api/api/helper"
+	_ "CarSaleAd-Web-Api/api/dto"
+	_ "CarSaleAd-Web-Api/api/helper"
 	"CarSaleAd-Web-Api/config"
 	"CarSaleAd-Web-Api/services"
-	"net/http"
-	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
@@ -33,23 +31,26 @@ func NewCityHandler(cfg *config.Config) *CityHandler {
 // @Router /v1/cities/ [post]
 // @Security AuthBearer
 func (h *CityHandler) Create(c *gin.Context) {
-	req := dto.CreateUpdateCityRequest{}
-	err := c.ShouldBindJSON(&req)
+	Create(c, h.service.Create)
+	//Create[dto.CreateUpdateCityRequest, dto.CityResponse](c, h.service.Create)
 
-	if err != nil {
-		c.AbortWithStatusJSON(http.StatusBadRequest,
-			helper.GenerateBaseResponseWithValidationError(nil, false, 121, err))
-		return
-	}
+	// req := dto.CreateUpdateCityRequest{}
+	// err := c.ShouldBindJSON(&req)
 
-	res, err := h.service.Create(c, &req)
+	// if err != nil {
+	// 	c.AbortWithStatusJSON(http.StatusBadRequest,
+	// 		helper.GenerateBaseResponseWithValidationError(nil, false, 121, err))
+	// 	return
+	// }
 
-	if err != nil {
-		c.AbortWithStatusJSON(helper.TranslateErrorToStatusCode(err),
-			helper.GenerateBaseResponseWithError(nil, false, 121, err))
-		return
-	}
-	c.JSON(http.StatusCreated, helper.GenerateBaseResponse(res, true, 0))
+	// res, err := h.service.Create(c, &req)
+
+	// if err != nil {
+	// 	c.AbortWithStatusJSON(helper.TranslateErrorToStatusCode(err),
+	// 		helper.GenerateBaseResponseWithError(nil, false, 121, err))
+	// 	return
+	// }
+	// c.JSON(http.StatusCreated, helper.GenerateBaseResponse(res, true, 0))
 
 }
 
@@ -66,24 +67,25 @@ func (h *CityHandler) Create(c *gin.Context) {
 // @Router /v1/cities/{id} [put]
 // @Security AuthBearer
 func (h *CityHandler) Update(c *gin.Context) {
-	id, _ := strconv.Atoi(c.Params.ByName("id"))
-	req := dto.CreateUpdateCityRequest{}
-	err := c.ShouldBindJSON(&req)
+	Update(c, h.service.Update)
+	// id, _ := strconv.Atoi(c.Params.ByName("id"))
+	// req := dto.CreateUpdateCityRequest{}
+	// err := c.ShouldBindJSON(&req)
 
-	if err != nil {
-		c.AbortWithStatusJSON(http.StatusBadRequest,
-			helper.GenerateBaseResponseWithValidationError(nil, false, 121, err))
-		return
-	}
+	// if err != nil {
+	// 	c.AbortWithStatusJSON(http.StatusBadRequest,
+	// 		helper.GenerateBaseResponseWithValidationError(nil, false, 121, err))
+	// 	return
+	// }
 
-	res, err := h.service.Update(c, id, &req)
+	// res, err := h.service.Update(c, id, &req)
 
-	if err != nil {
-		c.AbortWithStatusJSON(helper.TranslateErrorToStatusCode(err),
-			helper.GenerateBaseResponseWithError(nil, false, 121, err))
-		return
-	}
-	c.JSON(http.StatusOK, helper.GenerateBaseResponse(res, true, 0))
+	// if err != nil {
+	// 	c.AbortWithStatusJSON(helper.TranslateErrorToStatusCode(err),
+	// 		helper.GenerateBaseResponseWithError(nil, false, 121, err))
+	// 	return
+	// }
+	// c.JSON(http.StatusOK, helper.GenerateBaseResponse(res, true, 0))
 
 }
 
@@ -99,22 +101,23 @@ func (h *CityHandler) Update(c *gin.Context) {
 // @Router /v1/cities/{id} [delete]
 // @Security AuthBearer
 func (h *CityHandler) Delete(c *gin.Context) {
-	id, _ := strconv.Atoi(c.Params.ByName("id"))
-	if id == 0 {
-		c.AbortWithStatusJSON(http.StatusNotFound,
-			helper.GenerateBaseResponse(nil, false, 121))
-		return
+	Delete(c, h.service.Delete)
+	// id, _ := strconv.Atoi(c.Params.ByName("id"))
+	// if id == 0 {
+	// 	c.AbortWithStatusJSON(http.StatusNotFound,
+	// 		helper.GenerateBaseResponse(nil, false, 121))
+	// 	return
 
-	}
+	// }
 
-	err := h.service.Delete(c, id)
-	if err != nil {
-		c.AbortWithStatusJSON(helper.TranslateErrorToStatusCode(err),
-			helper.GenerateBaseResponseWithError(nil, false, 121, err))
-		return
-	}
+	// err := h.service.Delete(c, id)
+	// if err != nil {
+	// 	c.AbortWithStatusJSON(helper.TranslateErrorToStatusCode(err),
+	// 		helper.GenerateBaseResponseWithError(nil, false, 121, err))
+	// 	return
+	// }
 
-	c.JSON(http.StatusOK, helper.GenerateBaseResponse(nil, true, 0))
+	// c.JSON(http.StatusOK, helper.GenerateBaseResponse(nil, true, 0))
 
 }
 
@@ -130,23 +133,23 @@ func (h *CityHandler) Delete(c *gin.Context) {
 // @Router /v1/cities/{id} [get]
 // @Security AuthBearer
 func (h *CityHandler) GetById(c *gin.Context) {
+	GetById(c, h.service.GetById)
+	// id, _ := strconv.Atoi(c.Params.ByName("id"))
+	// if id == 0 {
+	// 	c.AbortWithStatusJSON(http.StatusNotFound,
+	// 		helper.GenerateBaseResponse(nil, false, 121))
+	// 	return
+	// }
 
-	id, _ := strconv.Atoi(c.Params.ByName("id"))
-	if id == 0 {
-		c.AbortWithStatusJSON(http.StatusNotFound,
-			helper.GenerateBaseResponse(nil, false, 121))
-		return
-	}
+	// res, err := h.service.GetById(c, id)
 
-	res, err := h.service.GetById(c, id)
+	// if err != nil {
+	// 	c.AbortWithStatusJSON(helper.TranslateErrorToStatusCode(err),
+	// 		helper.GenerateBaseResponseWithError(nil, false, 121, err))
+	// 	return
+	// }
 
-	if err != nil {
-		c.AbortWithStatusJSON(helper.TranslateErrorToStatusCode(err),
-			helper.GenerateBaseResponseWithError(nil, false, 121, err))
-		return
-	}
-
-	c.JSON(http.StatusOK, helper.GenerateBaseResponse(res, true, 0))
+	// c.JSON(http.StatusOK, helper.GenerateBaseResponse(res, true, 0))
 
 }
 
@@ -162,23 +165,24 @@ func (h *CityHandler) GetById(c *gin.Context) {
 // @Router /v1/cities/get-by-filter [post]
 // @Security AuthBearer
 func (h *CityHandler) GetByFilter(c *gin.Context) {
-	req := dto.PaginationInputWithFilter{}
-	err := c.ShouldBindJSON(&req)
+	GetByFilter(c, h.service.GetByFilter)
+	// req := dto.PaginationInputWithFilter{}
+	// err := c.ShouldBindJSON(&req)
 
-	if err != nil {
-		c.AbortWithStatusJSON(http.StatusBadRequest,
-			helper.GenerateBaseResponseWithValidationError(nil, false, 121, err))
-		return
-	}
+	// if err != nil {
+	// 	c.AbortWithStatusJSON(http.StatusBadRequest,
+	// 		helper.GenerateBaseResponseWithValidationError(nil, false, 121, err))
+	// 	return
+	// }
 
-	res, err := h.service.GetByFilter(c, &req)
+	// res, err := h.service.GetByFilter(c, &req)
 
-	if err != nil {
-		c.AbortWithStatusJSON(helper.TranslateErrorToStatusCode(err),
-			helper.GenerateBaseResponseWithError(nil, false, 121, err))
-		return
-	}
+	// if err != nil {
+	// 	c.AbortWithStatusJSON(helper.TranslateErrorToStatusCode(err),
+	// 		helper.GenerateBaseResponseWithError(nil, false, 121, err))
+	// 	return
+	// }
 
-	c.JSON(http.StatusOK, helper.GenerateBaseResponse(res, true, 0))
+	// c.JSON(http.StatusOK, helper.GenerateBaseResponse(res, true, 0))
 
 }
