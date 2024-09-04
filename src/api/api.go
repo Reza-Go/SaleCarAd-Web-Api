@@ -6,6 +6,7 @@ import (
 	validation "CarSaleAd-Web-Api/api/validations"
 	"CarSaleAd-Web-Api/config"
 	"CarSaleAd-Web-Api/docs"
+	"CarSaleAd-Web-Api/pkg/logging"
 	"fmt"
 
 	"github.com/gin-gonic/gin"
@@ -15,6 +16,8 @@ import (
 	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
+var logger = logging.NewLogger(config.GetConfig())
+
 func InitServer(cfg *config.Config) {
 
 	r := gin.New()
@@ -23,8 +26,14 @@ func InitServer(cfg *config.Config) {
 	//validations
 	val, ok := binding.Validator.Engine().(*validator.Validate)
 	if ok {
-		val.RegisterValidation("mobile", validation.IranianMobileNumberValidator, true)
-		val.RegisterValidation("password", validation.PasswordValidator, true)
+		err := val.RegisterValidation("mobile", validation.IranianMobileNumberValidator, true)
+		if err != nil {
+			logger.Error(logging.Validation, logging.StartUp, err.Error(), nil)
+		}
+		err = val.RegisterValidation("password", validation.PasswordValidator, true)
+		if err != nil {
+			logger.Error(logging.Validation, logging.StartUp, err.Error(), nil)
+		}
 	}
 
 	//middlewares
@@ -53,11 +62,20 @@ func InitServer(cfg *config.Config) {
 		files := v1.Group("/files", middlewares.Authentication(cfg), middlewares.Authorization([]string{"admin"}))
 		routers.File(files, cfg)
 
+		propertyCategories := v1.Group("/property-categories", middlewares.Authentication(cfg), middlewares.Authorization([]string{"admin"}))
+		routers.PropertyCategory(propertyCategories, cfg)
+
+		properties := v1.Group("/properties", middlewares.Authentication(cfg), middlewares.Authorization([]string{"admin"}))
+		routers.Property(properties, cfg)
+
 	}
 	//Swagger
 	RegisterSwagger(r, cfg)
 
-	r.Run(fmt.Sprintf(":%s", cfg.Server.Port))
+	err := r.Run(fmt.Sprintf(":%s", cfg.Server.Port))
+	if err != nil {
+		logger.Error(logging.General, logging.StartUp, err.Error(), nil)
+	}
 }
 
 func RegisterSwagger(r *gin.Engine, cfg *config.Config) {
