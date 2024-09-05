@@ -22,6 +22,7 @@ func Up_1() {
 	createPropertyCategory(database)
 	createCarType(database)
 	createGearbox(database)
+	createColor(database)
 
 }
 
@@ -307,6 +308,17 @@ func createGearbox(database *gorm.DB) {
 	if count == 0 {
 		database.Create(&models.Gearbox{Name: "Manual"})
 		database.Create(&models.Gearbox{Name: "Automatic"})
+	}
+}
+func createColor(database *gorm.DB) {
+	count := 0
+	database.Model(&models.Color{}).
+		Select("count(*)").Find(&count)
+
+	if count == 0 {
+		database.Create(&models.Color{Name: "Black", HexCode: "#000000"})
+		database.Create(&models.Color{Name: "White", HexCode: "#ffffff"})
+		database.Create(&models.Color{Name: "Blue", HexCode: "#0000ff"})
 	}
 }
 
