@@ -68,6 +68,15 @@ func InitServer(cfg *config.Config) {
 		properties := v1.Group("/properties", middlewares.Authentication(cfg), middlewares.Authorization([]string{"admin"}))
 		routers.Property(properties, cfg)
 
+		companies := v1.Group("/companies", middlewares.Authentication(cfg), middlewares.Authorization([]string{"admin"}))
+		routers.Company(companies, cfg)
+
+		carTypes := v1.Group("/car-types", middlewares.Authentication(cfg), middlewares.Authorization([]string{"admin"}))
+		routers.CarType(carTypes, cfg)
+
+		gearboxes := v1.Group("/gearboxes", middlewares.Authentication(cfg), middlewares.Authorization([]string{"admin"}))
+		routers.Gearbox(gearboxes, cfg)
+
 	}
 	//Swagger
 	RegisterSwagger(r, cfg)

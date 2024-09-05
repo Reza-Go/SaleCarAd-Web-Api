@@ -1,5 +1,21 @@
 definitions:
+  CarSaleAd-Web-Api_api_dto.CarTypeResponse:
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+    type: object
   CarSaleAd-Web-Api_api_dto.CityResponse:
+    properties:
+      country:
+        $ref: '#/definitions/CarSaleAd-Web-Api_api_dto.CountryResponse'
+      id:
+        type: integer
+      name:
+        type: string
+    type: object
+  CarSaleAd-Web-Api_api_dto.CompanyResponse:
     properties:
       country:
         $ref: '#/definitions/CarSaleAd-Web-Api_api_dto.CountryResponse'
@@ -18,6 +34,36 @@ definitions:
         type: integer
       name:
         type: string
+    type: object
+  CarSaleAd-Web-Api_api_dto.CreateCarTypeRequest:
+    properties:
+      name:
+        maxLength: 15
+        minLength: 3
+        type: string
+    required:
+    - name
+    type: object
+  CarSaleAd-Web-Api_api_dto.CreateCompanyRequest:
+    properties:
+      countryId:
+        type: integer
+      name:
+        maxLength: 20
+        minLength: 3
+        type: string
+    required:
+    - countryId
+    - name
+    type: object
+  CarSaleAd-Web-Api_api_dto.CreateGearboxRequest:
+    properties:
+      name:
+        maxLength: 15
+        minLength: 3
+        type: string
+    required:
+    - name
     type: object
   CarSaleAd-Web-Api_api_dto.CreatePropertyCategoryRequest:
     properties:
@@ -99,6 +145,13 @@ definitions:
       type:
         type: string
     type: object
+  CarSaleAd-Web-Api_api_dto.GearboxResponse:
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+    type: object
   CarSaleAd-Web-Api_api_dto.GetOtpRequest:
     properties:
       mobileNumber:
@@ -120,6 +173,23 @@ definitions:
     - password
     - username
     type: object
+  CarSaleAd-Web-Api_api_dto.PagedList-CarSaleAd-Web-Api_api_dto_CarTypeResponse:
+    properties:
+      hasNextPage:
+        type: boolean
+      hasPreviousPage:
+        type: boolean
+      items:
+        items:
+          $ref: '#/definitions/CarSaleAd-Web-Api_api_dto.CarTypeResponse'
+        type: array
+      pageNumber:
+        type: integer
+      totalPages:
+        type: integer
+      totalRows:
+        type: integer
+    type: object
   CarSaleAd-Web-Api_api_dto.PagedList-CarSaleAd-Web-Api_api_dto_CityResponse:
     properties:
       hasNextPage:
@@ -129,6 +199,23 @@ definitions:
       items:
         items:
           $ref: '#/definitions/CarSaleAd-Web-Api_api_dto.CityResponse'
+        type: array
+      pageNumber:
+        type: integer
+      totalPages:
+        type: integer
+      totalRows:
+        type: integer
+    type: object
+  CarSaleAd-Web-Api_api_dto.PagedList-CarSaleAd-Web-Api_api_dto_CompanyResponse:
+    properties:
+      hasNextPage:
+        type: boolean
+      hasPreviousPage:
+        type: boolean
+      items:
+        items:
+          $ref: '#/definitions/CarSaleAd-Web-Api_api_dto.CompanyResponse'
         type: array
       pageNumber:
         type: integer
@@ -163,6 +250,23 @@ definitions:
       items:
         items:
           $ref: '#/definitions/CarSaleAd-Web-Api_api_dto.FileResponse'
+        type: array
+      pageNumber:
+        type: integer
+      totalPages:
+        type: integer
+      totalRows:
+        type: integer
+    type: object
+  CarSaleAd-Web-Api_api_dto.PagedList-CarSaleAd-Web-Api_api_dto_GearboxResponse:
+    properties:
+      hasNextPage:
+        type: boolean
+      hasPreviousPage:
+        type: boolean
+      items:
+        items:
+          $ref: '#/definitions/CarSaleAd-Web-Api_api_dto.GearboxResponse'
         type: array
       pageNumber:
         type: integer
@@ -294,10 +398,37 @@ definitions:
       sort:
         type: string
     type: object
+  CarSaleAd-Web-Api_api_dto.UpdateCarTypeRequest:
+    properties:
+      name:
+        maxLength: 15
+        minLength: 3
+        type: string
+    required:
+    - name
+    type: object
+  CarSaleAd-Web-Api_api_dto.UpdateCompanyRequest:
+    properties:
+      countryId:
+        type: integer
+      name:
+        maxLength: 20
+        minLength: 3
+        type: string
+    type: object
   CarSaleAd-Web-Api_api_dto.UpdateFileRequest:
     properties:
       description:
         type: string
+    type: object
+  CarSaleAd-Web-Api_api_dto.UpdateGearboxRequest:
+    properties:
+      name:
+        maxLength: 15
+        minLength: 3
+        type: string
+    required:
+    - name
     type: object
   CarSaleAd-Web-Api_api_dto.UpdatePropertyCategoryRequest:
     properties:
@@ -393,6 +524,157 @@ definitions:
 info:
   contact: {}
 paths:
+  /v1/car-types/:
+    post:
+      consumes:
+      - application/json
+      description: Create a CarType
+      parameters:
+      - description: Create a CarType
+        in: body
+        name: Request
+        required: true
+        schema:
+          $ref: '#/definitions/CarSaleAd-Web-Api_api_dto.CreateCarTypeRequest'
+      responses:
+        "201":
+          description: CarType response
+          schema:
+            allOf:
+            - $ref: '#/definitions/CarSaleAd-Web-Api_api_helper.BaseHttpResponse'
+            - properties:
+                result:
+                  $ref: '#/definitions/CarSaleAd-Web-Api_api_dto.CarTypeResponse'
+              type: object
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/CarSaleAd-Web-Api_api_helper.BaseHttpResponse'
+      security:
+      - AuthBearer: []
+      summary: Create a CarType
+      tags:
+      - CarType
+  /v1/car-types/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a CarType
+      parameters:
+      - description: Id
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: Response
+          schema:
+            $ref: '#/definitions/CarSaleAd-Web-Api_api_helper.BaseHttpResponse'
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/CarSaleAd-Web-Api_api_helper.BaseHttpResponse'
+      security:
+      - AuthBearer: []
+      summary: Delete a CarType
+      tags:
+      - CarType
+    get:
+      consumes:
+      - application/json
+      description: Get a CarType
+      parameters:
+      - description: Id
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: CarType Response
+          schema:
+            allOf:
+            - $ref: '#/definitions/CarSaleAd-Web-Api_api_helper.BaseHttpResponse'
+            - properties:
+                result:
+                  $ref: '#/definitions/CarSaleAd-Web-Api_api_dto.CarTypeResponse'
+              type: object
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/CarSaleAd-Web-Api_api_helper.BaseHttpResponse'
+      security:
+      - AuthBearer: []
+      summary: Get a CarType
+      tags:
+      - CarType
+    put:
+      consumes:
+      - application/json
+      description: Update a CarType
+      parameters:
+      - description: Id
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Update a CarType
+        in: body
+        name: Request
+        required: true
+        schema:
+          $ref: '#/definitions/CarSaleAd-Web-Api_api_dto.UpdateCarTypeRequest'
+      responses:
+        "200":
+          description: CarType response
+          schema:
+            allOf:
+            - $ref: '#/definitions/CarSaleAd-Web-Api_api_helper.BaseHttpResponse'
+            - properties:
+                result:
+                  $ref: '#/definitions/CarSaleAd-Web-Api_api_dto.CarTypeResponse'
+              type: object
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/CarSaleAd-Web-Api_api_helper.BaseHttpResponse'
+      security:
+      - AuthBearer: []
+      summary: Update a CarType
+      tags:
+      - CarType
+  /v1/car-types/get-by-filter:
+    post:
+      consumes:
+      - application/json
+      description: Get CarTypes
+      parameters:
+      - description: Request
+        in: body
+        name: Request
+        required: true
+        schema:
+          $ref: '#/definitions/CarSaleAd-Web-Api_api_dto.PaginationInputWithFilter'
+      responses:
+        "200":
+          description: CarType Response
+          schema:
+            allOf:
+            - $ref: '#/definitions/CarSaleAd-Web-Api_api_helper.BaseHttpResponse'
+            - properties:
+                result:
+                  $ref: '#/definitions/CarSaleAd-Web-Api_api_dto.PagedList-CarSaleAd-Web-Api_api_dto_CarTypeResponse'
+              type: object
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/CarSaleAd-Web-Api_api_helper.BaseHttpResponse'
+      security:
+      - AuthBearer: []
+      summary: Get CarTypes
+      tags:
+      - CarType
   /v1/cities/:
     post:
       consumes:
@@ -544,6 +826,157 @@ paths:
       summary: Get Cities
       tags:
       - City
+  /v1/companies/:
+    post:
+      consumes:
+      - application/json
+      description: Create a Company
+      parameters:
+      - description: Create a Company
+        in: body
+        name: Request
+        required: true
+        schema:
+          $ref: '#/definitions/CarSaleAd-Web-Api_api_dto.CreateCompanyRequest'
+      responses:
+        "201":
+          description: Company response
+          schema:
+            allOf:
+            - $ref: '#/definitions/CarSaleAd-Web-Api_api_helper.BaseHttpResponse'
+            - properties:
+                result:
+                  $ref: '#/definitions/CarSaleAd-Web-Api_api_dto.CompanyResponse'
+              type: object
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/CarSaleAd-Web-Api_api_helper.BaseHttpResponse'
+      security:
+      - AuthBearer: []
+      summary: Create a Company
+      tags:
+      - Company
+  /v1/companies/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a Company
+      parameters:
+      - description: Id
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: Response
+          schema:
+            $ref: '#/definitions/CarSaleAd-Web-Api_api_helper.BaseHttpResponse'
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/CarSaleAd-Web-Api_api_helper.BaseHttpResponse'
+      security:
+      - AuthBearer: []
+      summary: Delete a Company
+      tags:
+      - Company
+    get:
+      consumes:
+      - application/json
+      description: Get a Company
+      parameters:
+      - description: Id
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: Company Response
+          schema:
+            allOf:
+            - $ref: '#/definitions/CarSaleAd-Web-Api_api_helper.BaseHttpResponse'
+            - properties:
+                result:
+                  $ref: '#/definitions/CarSaleAd-Web-Api_api_dto.CompanyResponse'
+              type: object
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/CarSaleAd-Web-Api_api_helper.BaseHttpResponse'
+      security:
+      - AuthBearer: []
+      summary: Get a Company
+      tags:
+      - Company
+    put:
+      consumes:
+      - application/json
+      description: Update a Company
+      parameters:
+      - description: Id
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Update a Company
+        in: body
+        name: Request
+        required: true
+        schema:
+          $ref: '#/definitions/CarSaleAd-Web-Api_api_dto.UpdateCompanyRequest'
+      responses:
+        "200":
+          description: Company response
+          schema:
+            allOf:
+            - $ref: '#/definitions/CarSaleAd-Web-Api_api_helper.BaseHttpResponse'
+            - properties:
+                result:
+                  $ref: '#/definitions/CarSaleAd-Web-Api_api_dto.CompanyResponse'
+              type: object
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/CarSaleAd-Web-Api_api_helper.BaseHttpResponse'
+      security:
+      - AuthBearer: []
+      summary: Update a Company
+      tags:
+      - Company
+  /v1/companies/get-by-filter:
+    post:
+      consumes:
+      - application/json
+      description: Get Companies
+      parameters:
+      - description: Request
+        in: body
+        name: Request
+        required: true
+        schema:
+          $ref: '#/definitions/CarSaleAd-Web-Api_api_dto.PaginationInputWithFilter'
+      responses:
+        "200":
+          description: Company Response
+          schema:
+            allOf:
+            - $ref: '#/definitions/CarSaleAd-Web-Api_api_helper.BaseHttpResponse'
+            - properties:
+                result:
+                  $ref: '#/definitions/CarSaleAd-Web-Api_api_dto.PagedList-CarSaleAd-Web-Api_api_dto_CompanyResponse'
+              type: object
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/CarSaleAd-Web-Api_api_helper.BaseHttpResponse'
+      security:
+      - AuthBearer: []
+      summary: Get Companies
+      tags:
+      - Company
   /v1/countries/:
     post:
       consumes:
@@ -849,6 +1282,157 @@ paths:
       summary: Get Files
       tags:
       - File
+  /v1/gearboxes/:
+    post:
+      consumes:
+      - application/json
+      description: Create a Gearbox
+      parameters:
+      - description: Create a Gearbox
+        in: body
+        name: Request
+        required: true
+        schema:
+          $ref: '#/definitions/CarSaleAd-Web-Api_api_dto.CreateGearboxRequest'
+      responses:
+        "201":
+          description: Gearbox response
+          schema:
+            allOf:
+            - $ref: '#/definitions/CarSaleAd-Web-Api_api_helper.BaseHttpResponse'
+            - properties:
+                result:
+                  $ref: '#/definitions/CarSaleAd-Web-Api_api_dto.GearboxResponse'
+              type: object
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/CarSaleAd-Web-Api_api_helper.BaseHttpResponse'
+      security:
+      - AuthBearer: []
+      summary: Create a Gearbox
+      tags:
+      - Gearbox
+  /v1/gearboxes/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a Gearbox
+      parameters:
+      - description: Id
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: Response
+          schema:
+            $ref: '#/definitions/CarSaleAd-Web-Api_api_helper.BaseHttpResponse'
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/CarSaleAd-Web-Api_api_helper.BaseHttpResponse'
+      security:
+      - AuthBearer: []
+      summary: Delete a Gearbox
+      tags:
+      - Gearbox
+    get:
+      consumes:
+      - application/json
+      description: Get a Gearbox
+      parameters:
+      - description: Id
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: Gearbox Response
+          schema:
+            allOf:
+            - $ref: '#/definitions/CarSaleAd-Web-Api_api_helper.BaseHttpResponse'
+            - properties:
+                result:
+                  $ref: '#/definitions/CarSaleAd-Web-Api_api_dto.GearboxResponse'
+              type: object
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/CarSaleAd-Web-Api_api_helper.BaseHttpResponse'
+      security:
+      - AuthBearer: []
+      summary: Get a Gearbox
+      tags:
+      - Gearbox
+    put:
+      consumes:
+      - application/json
+      description: Update a Gearbox
+      parameters:
+      - description: Id
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Update a Gearbox
+        in: body
+        name: Request
+        required: true
+        schema:
+          $ref: '#/definitions/CarSaleAd-Web-Api_api_dto.UpdateGearboxRequest'
+      responses:
+        "200":
+          description: Gearbox response
+          schema:
+            allOf:
+            - $ref: '#/definitions/CarSaleAd-Web-Api_api_helper.BaseHttpResponse'
+            - properties:
+                result:
+                  $ref: '#/definitions/CarSaleAd-Web-Api_api_dto.GearboxResponse'
+              type: object
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/CarSaleAd-Web-Api_api_helper.BaseHttpResponse'
+      security:
+      - AuthBearer: []
+      summary: Update a Gearbox
+      tags:
+      - Gearbox
+  /v1/gearboxes/get-by-filter:
+    post:
+      consumes:
+      - application/json
+      description: Get Gearboxes
+      parameters:
+      - description: Request
+        in: body
+        name: Request
+        required: true
+        schema:
+          $ref: '#/definitions/CarSaleAd-Web-Api_api_dto.PaginationInputWithFilter'
+      responses:
+        "200":
+          description: Gearbox Response
+          schema:
+            allOf:
+            - $ref: '#/definitions/CarSaleAd-Web-Api_api_helper.BaseHttpResponse'
+            - properties:
+                result:
+                  $ref: '#/definitions/CarSaleAd-Web-Api_api_dto.PagedList-CarSaleAd-Web-Api_api_dto_GearboxResponse'
+              type: object
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/CarSaleAd-Web-Api_api_helper.BaseHttpResponse'
+      security:
+      - AuthBearer: []
+      summary: Get Gearboxes
+      tags:
+      - Gearbox
   /v1/health/:
     get:
       consumes:
