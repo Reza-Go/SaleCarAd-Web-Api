@@ -86,6 +86,12 @@ func InitServer(cfg *config.Config) {
 		carModelColors := v1.Group("/car-model-colors", middlewares.Authentication(cfg), middlewares.Authorization([]string{"admin"}))
 		routers.CarModelColor(carModelColors, cfg)
 
+		years := v1.Group("/years", middlewares.Authentication(cfg), middlewares.Authorization([]string{"admin"}))
+		routers.Year(years, cfg)
+
+		carModelYears := v1.Group("/car-model-years", middlewares.Authentication(cfg), middlewares.Authorization([]string{"admin"}))
+		routers.CarModelYear(carModelYears, cfg)
+
 	}
 	//Swagger
 	RegisterSwagger(r, cfg)
