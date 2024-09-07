@@ -272,6 +272,263 @@ const docTemplate = `{
                 }
             }
         },
+        "/v1/car-model-price-histories/": {
+            "post": {
+                "security": [
+                    {
+                        "AuthBearer": []
+                    }
+                ],
+                "description": "Create a CarModelPriceHistory",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "CarModelPriceHistory"
+                ],
+                "summary": "Create a CarModelPriceHistory",
+                "parameters": [
+                    {
+                        "description": "Create a CarModelPriceHistory",
+                        "name": "Request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/CarSaleAd-Web-Api_api_dto.CreateCarModelPriceHistoryRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "CarModelPriceHistory response",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/CarSaleAd-Web-Api_api_helper.BaseHttpResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "result": {
+                                            "$ref": "#/definitions/CarSaleAd-Web-Api_api_dto.CarModelPriceHistoryResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "$ref": "#/definitions/CarSaleAd-Web-Api_api_helper.BaseHttpResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/car-model-price-histories/get-by-filter": {
+            "post": {
+                "security": [
+                    {
+                        "AuthBearer": []
+                    }
+                ],
+                "description": "GetCarModelPriceHistories",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "CarModelPriceHistory"
+                ],
+                "summary": "Get CarModelPriceHistories",
+                "parameters": [
+                    {
+                        "description": "Request",
+                        "name": "Request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/CarSaleAd-Web-Api_api_dto.PaginationInputWithFilter"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "CarModelPriceHistory Response",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/CarSaleAd-Web-Api_api_helper.BaseHttpResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "result": {
+                                            "$ref": "#/definitions/CarSaleAd-Web-Api_api_dto.PagedList-CarSaleAd-Web-Api_api_dto_CarModelPriceHistoryResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "$ref": "#/definitions/CarSaleAd-Web-Api_api_helper.BaseHttpResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/car-model-price-histories/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "AuthBearer": []
+                    }
+                ],
+                "description": "Get a CarModelPriceHistory",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "CarModelPriceHistory"
+                ],
+                "summary": "Get a CarModelPriceHistory",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "CarModelPriceHistory Response",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/CarSaleAd-Web-Api_api_helper.BaseHttpResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "result": {
+                                            "$ref": "#/definitions/CarSaleAd-Web-Api_api_dto.CarModelPriceHistoryResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "$ref": "#/definitions/CarSaleAd-Web-Api_api_helper.BaseHttpResponse"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "security": [
+                    {
+                        "AuthBearer": []
+                    }
+                ],
+                "description": "Update a CarModelPriceHistory",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "CarModelPriceHistory"
+                ],
+                "summary": "Update a CarModelPriceHistory",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Update a CarModelPriceHistory",
+                        "name": "Request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/CarSaleAd-Web-Api_api_dto.UpdateCarModelPriceHistoryRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "CarModelPriceHistory response",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/CarSaleAd-Web-Api_api_helper.BaseHttpResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "result": {
+                                            "$ref": "#/definitions/CarSaleAd-Web-Api_api_dto.CarModelPriceHistoryResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "$ref": "#/definitions/CarSaleAd-Web-Api_api_helper.BaseHttpResponse"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "AuthBearer": []
+                    }
+                ],
+                "description": "Delete a CarModelPriceHistory",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "CarModelPriceHistory"
+                ],
+                "summary": "Delete a CarModelPriceHistory",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Response",
+                        "schema": {
+                            "$ref": "#/definitions/CarSaleAd-Web-Api_api_helper.BaseHttpResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "$ref": "#/definitions/CarSaleAd-Web-Api_api_helper.BaseHttpResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/v1/car-model-years/": {
             "post": {
                 "security": [
@@ -3669,6 +3926,23 @@ const docTemplate = `{
                 }
             }
         },
+        "CarSaleAd-Web-Api_api_dto.CarModelPriceHistoryResponse": {
+            "type": "object",
+            "properties": {
+                "carModelYearId": {
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "price": {
+                    "type": "number"
+                },
+                "priceAt": {
+                    "type": "string"
+                }
+            }
+        },
         "CarSaleAd-Web-Api_api_dto.CarModelResponse": {
             "type": "object",
             "properties": {
@@ -3676,6 +3950,12 @@ const docTemplate = `{
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/CarSaleAd-Web-Api_api_dto.CarModelColorResponse"
+                    }
+                },
+                "carModelYears": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/CarSaleAd-Web-Api_api_dto.CarModelYearResponse"
                     }
                 },
                 "carType": {
@@ -3698,6 +3978,15 @@ const docTemplate = `{
         "CarSaleAd-Web-Api_api_dto.CarModelYearResponse": {
             "type": "object",
             "properties": {
+                "carModelId": {
+                    "type": "integer"
+                },
+                "carModelPriceHistories": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/CarSaleAd-Web-Api_api_dto.CarModelPriceHistoryResponse"
+                    }
+                },
                 "id": {
                     "type": "integer"
                 },
@@ -3794,6 +4083,25 @@ const docTemplate = `{
                 },
                 "colorId": {
                     "type": "integer"
+                }
+            }
+        },
+        "CarSaleAd-Web-Api_api_dto.CreateCarModelPriceHistoryRequest": {
+            "type": "object",
+            "required": [
+                "carModelYearId",
+                "price",
+                "priceAt"
+            ],
+            "properties": {
+                "carModelYearId": {
+                    "type": "integer"
+                },
+                "price": {
+                    "type": "number"
+                },
+                "priceAt": {
+                    "type": "string"
                 }
             }
         },
@@ -4084,6 +4392,32 @@ const docTemplate = `{
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/CarSaleAd-Web-Api_api_dto.CarModelColorResponse"
+                    }
+                },
+                "pageNumber": {
+                    "type": "integer"
+                },
+                "totalPages": {
+                    "type": "integer"
+                },
+                "totalRows": {
+                    "type": "integer"
+                }
+            }
+        },
+        "CarSaleAd-Web-Api_api_dto.PagedList-CarSaleAd-Web-Api_api_dto_CarModelPriceHistoryResponse": {
+            "type": "object",
+            "properties": {
+                "hasNextPage": {
+                    "type": "boolean"
+                },
+                "hasPreviousPage": {
+                    "type": "boolean"
+                },
+                "items": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/CarSaleAd-Web-Api_api_dto.CarModelPriceHistoryResponse"
                     }
                 },
                 "pageNumber": {
@@ -4581,6 +4915,17 @@ const docTemplate = `{
                 },
                 "colorId": {
                     "type": "integer"
+                }
+            }
+        },
+        "CarSaleAd-Web-Api_api_dto.UpdateCarModelPriceHistoryRequest": {
+            "type": "object",
+            "properties": {
+                "price": {
+                    "type": "number"
+                },
+                "priceAt": {
+                    "type": "string"
                 }
             }
         },

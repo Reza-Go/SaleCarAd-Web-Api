@@ -92,6 +92,9 @@ func InitServer(cfg *config.Config) {
 		carModelYears := v1.Group("/car-model-years", middlewares.Authentication(cfg), middlewares.Authorization([]string{"admin"}))
 		routers.CarModelYear(carModelYears, cfg)
 
+		carModelPriceHistories := v1.Group("/car-model-price-histories", middlewares.Authentication(cfg), middlewares.Authorization([]string{"admin"}))
+		routers.CarModelPriceHistory(carModelPriceHistories, cfg)
+
 	}
 	//Swagger
 	RegisterSwagger(r, cfg)
