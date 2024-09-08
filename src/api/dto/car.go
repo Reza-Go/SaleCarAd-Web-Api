@@ -59,14 +59,15 @@ type UpdateCarModelRequest struct {
 }
 
 type CarModelResponse struct {
-	Id             int                     `json:"id"`
-	Name           string                  `json:"name"`
-	Company        CompanyResponse         `json:"company"`
-	CarType        CarTypeResponse         `json:"carType"`
-	GearBox        GearboxResponse         `json:"gearbox"`
-	CarModelColors []CarModelColorResponse `json:"carModelColors,omitempty"`
-	CarModelYears  []CarModelYearResponse  `json:"carModelYears,omitempty"`
-	CarModelImages []CarModelImageResponse `json:"carModelImages,omitempty"`
+	Id                 int                        `json:"id"`
+	Name               string                     `json:"name"`
+	Company            CompanyResponse            `json:"company"`
+	CarType            CarTypeResponse            `json:"carType"`
+	GearBox            GearboxResponse            `json:"gearbox"`
+	CarModelColors     []CarModelColorResponse    `json:"carModelColors,omitempty"`
+	CarModelYears      []CarModelYearResponse     `json:"carModelYears,omitempty"`
+	CarModelImages     []CarModelImageResponse    `json:"carModelImages,omitempty"`
+	CarModelProperties []CarModelPropertyResponse `json:"carModelProperties,omitempty"`
 }
 
 type CreateCarModelColorRequest struct {
@@ -132,4 +133,21 @@ type CarModelImageResponse struct {
 	CarModelId  int          `json:"carModelId,omitempty"`
 	Image       FileResponse `json:"image,omitempty"`
 	IsMainImage bool         `json:"isMainImage"`
+}
+
+type CreateCarModelPropertyRequest struct {
+	CarModelId int    `json:"carModelId" binding:"required"`
+	PropertyId int    `json:"propertyId" binding:"required"`
+	Value      string `json:"value" binding:"required,max=100"`
+}
+
+type UpdateCarModelPropertyRequest struct {
+	Value string `json:"value" binding:"required,max=100"`
+}
+
+type CarModelPropertyResponse struct {
+	Id         int              `json:"id"`
+	CarModelId int              `json:"carModelId,omitempty"`
+	Property   PropertyResponse `json:"property,omitempty"`
+	Value      string           `json:"value"`
 }

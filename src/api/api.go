@@ -98,6 +98,9 @@ func InitServer(cfg *config.Config) {
 		carModelImages := v1.Group("/car-model-images", middlewares.Authentication(cfg), middlewares.Authorization([]string{"admin"}))
 		routers.CarModelImage(carModelImages, cfg)
 
+		carModelProperties := v1.Group("/car-model-properties", middlewares.Authentication(cfg), middlewares.Authorization([]string{"admin"}))
+		routers.CarModelProperty(carModelProperties, cfg)
+
 		r.Static("/static", "./uploads")
 
 	}

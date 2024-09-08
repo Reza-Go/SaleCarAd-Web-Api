@@ -786,6 +786,263 @@ const docTemplate = `{
                 }
             }
         },
+        "/v1/car-model-properties/": {
+            "post": {
+                "security": [
+                    {
+                        "AuthBearer": []
+                    }
+                ],
+                "description": "Create a CarModelProperty",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "CarModelProperty"
+                ],
+                "summary": "Create a CarModelProperty",
+                "parameters": [
+                    {
+                        "description": "Create a CarModelProperty",
+                        "name": "Request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/CarSaleAd-Web-Api_api_dto.CreateCarModelPropertyRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "CarModelProperty response",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/CarSaleAd-Web-Api_api_helper.BaseHttpResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "result": {
+                                            "$ref": "#/definitions/CarSaleAd-Web-Api_api_dto.CarModelPropertyResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "$ref": "#/definitions/CarSaleAd-Web-Api_api_helper.BaseHttpResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/car-model-properties/get-by-filter": {
+            "post": {
+                "security": [
+                    {
+                        "AuthBearer": []
+                    }
+                ],
+                "description": "Get CarModelProperties",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "CarModelProperty"
+                ],
+                "summary": "Get CarModelProperties",
+                "parameters": [
+                    {
+                        "description": "Request",
+                        "name": "Request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/CarSaleAd-Web-Api_api_dto.PaginationInputWithFilter"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "CarModelProperty Response",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/CarSaleAd-Web-Api_api_helper.BaseHttpResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "result": {
+                                            "$ref": "#/definitions/CarSaleAd-Web-Api_api_dto.PagedList-CarSaleAd-Web-Api_api_dto_CarModelPropertyResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "$ref": "#/definitions/CarSaleAd-Web-Api_api_helper.BaseHttpResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/car-model-properties/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "AuthBearer": []
+                    }
+                ],
+                "description": "Get a CarModelProperty",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "CarModelProperty"
+                ],
+                "summary": "Get a CarModelProperty",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "CarModelProperty Response",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/CarSaleAd-Web-Api_api_helper.BaseHttpResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "result": {
+                                            "$ref": "#/definitions/CarSaleAd-Web-Api_api_dto.CarModelPropertyResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "$ref": "#/definitions/CarSaleAd-Web-Api_api_helper.BaseHttpResponse"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "security": [
+                    {
+                        "AuthBearer": []
+                    }
+                ],
+                "description": "Update a CarModelProperty",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "CarModelProperty"
+                ],
+                "summary": "Update a CarModelProperty",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Update a CarModelProperty",
+                        "name": "Request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/CarSaleAd-Web-Api_api_dto.UpdateCarModelPropertyRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "CarModelProperty response",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/CarSaleAd-Web-Api_api_helper.BaseHttpResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "result": {
+                                            "$ref": "#/definitions/CarSaleAd-Web-Api_api_dto.CarModelPropertyResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "$ref": "#/definitions/CarSaleAd-Web-Api_api_helper.BaseHttpResponse"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "AuthBearer": []
+                    }
+                ],
+                "description": "Delete a CarModelProperty",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "CarModelProperty"
+                ],
+                "summary": "Delete a CarModelProperty",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Response",
+                        "schema": {
+                            "$ref": "#/definitions/CarSaleAd-Web-Api_api_helper.BaseHttpResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "$ref": "#/definitions/CarSaleAd-Web-Api_api_helper.BaseHttpResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/v1/car-model-years/": {
             "post": {
                 "security": [
@@ -4186,8 +4443,8 @@ const docTemplate = `{
         "CarSaleAd-Web-Api_api_dto.CarModelImageResponse": {
             "type": "object",
             "properties": {
-                "carModel": {
-                    "$ref": "#/definitions/CarSaleAd-Web-Api_api_dto.CarModelResponse"
+                "carModelId": {
+                    "type": "integer"
                 },
                 "id": {
                     "type": "integer"
@@ -4217,6 +4474,23 @@ const docTemplate = `{
                 }
             }
         },
+        "CarSaleAd-Web-Api_api_dto.CarModelPropertyResponse": {
+            "type": "object",
+            "properties": {
+                "carModelId": {
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "property": {
+                    "$ref": "#/definitions/CarSaleAd-Web-Api_api_dto.PropertyResponse"
+                },
+                "value": {
+                    "type": "string"
+                }
+            }
+        },
         "CarSaleAd-Web-Api_api_dto.CarModelResponse": {
             "type": "object",
             "properties": {
@@ -4224,6 +4498,12 @@ const docTemplate = `{
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/CarSaleAd-Web-Api_api_dto.CarModelColorResponse"
+                    }
+                },
+                "carModelImages": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/CarSaleAd-Web-Api_api_dto.CarModelImageResponse"
                     }
                 },
                 "carModelYears": {
@@ -4394,6 +4674,26 @@ const docTemplate = `{
                 },
                 "priceAt": {
                     "type": "string"
+                }
+            }
+        },
+        "CarSaleAd-Web-Api_api_dto.CreateCarModelPropertyRequest": {
+            "type": "object",
+            "required": [
+                "carModelId",
+                "propertyId",
+                "value"
+            ],
+            "properties": {
+                "carModelId": {
+                    "type": "integer"
+                },
+                "propertyId": {
+                    "type": "integer"
+                },
+                "value": {
+                    "type": "string",
+                    "maxLength": 100
                 }
             }
         },
@@ -4736,6 +5036,32 @@ const docTemplate = `{
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/CarSaleAd-Web-Api_api_dto.CarModelPriceHistoryResponse"
+                    }
+                },
+                "pageNumber": {
+                    "type": "integer"
+                },
+                "totalPages": {
+                    "type": "integer"
+                },
+                "totalRows": {
+                    "type": "integer"
+                }
+            }
+        },
+        "CarSaleAd-Web-Api_api_dto.PagedList-CarSaleAd-Web-Api_api_dto_CarModelPropertyResponse": {
+            "type": "object",
+            "properties": {
+                "hasNextPage": {
+                    "type": "boolean"
+                },
+                "hasPreviousPage": {
+                    "type": "boolean"
+                },
+                "items": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/CarSaleAd-Web-Api_api_dto.CarModelPropertyResponse"
                     }
                 },
                 "pageNumber": {
@@ -5252,6 +5578,18 @@ const docTemplate = `{
                 },
                 "priceAt": {
                     "type": "string"
+                }
+            }
+        },
+        "CarSaleAd-Web-Api_api_dto.UpdateCarModelPropertyRequest": {
+            "type": "object",
+            "required": [
+                "value"
+            ],
+            "properties": {
+                "value": {
+                    "type": "string",
+                    "maxLength": 100
                 }
             }
         },

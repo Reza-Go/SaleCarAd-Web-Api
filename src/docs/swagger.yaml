@@ -8,8 +8,8 @@ definitions:
     type: object
   CarSaleAd-Web-Api_api_dto.CarModelImageResponse:
     properties:
-      carModel:
-        $ref: '#/definitions/CarSaleAd-Web-Api_api_dto.CarModelResponse'
+      carModelId:
+        type: integer
       id:
         type: integer
       image:
@@ -28,11 +28,26 @@ definitions:
       priceAt:
         type: string
     type: object
+  CarSaleAd-Web-Api_api_dto.CarModelPropertyResponse:
+    properties:
+      carModelId:
+        type: integer
+      id:
+        type: integer
+      property:
+        $ref: '#/definitions/CarSaleAd-Web-Api_api_dto.PropertyResponse'
+      value:
+        type: string
+    type: object
   CarSaleAd-Web-Api_api_dto.CarModelResponse:
     properties:
       carModelColors:
         items:
           $ref: '#/definitions/CarSaleAd-Web-Api_api_dto.CarModelColorResponse'
+        type: array
+      carModelImages:
+        items:
+          $ref: '#/definitions/CarSaleAd-Web-Api_api_dto.CarModelImageResponse'
         type: array
       carModelYears:
         items:
@@ -145,6 +160,20 @@ definitions:
     - carModelYearId
     - price
     - priceAt
+    type: object
+  CarSaleAd-Web-Api_api_dto.CreateCarModelPropertyRequest:
+    properties:
+      carModelId:
+        type: integer
+      propertyId:
+        type: integer
+      value:
+        maxLength: 100
+        type: string
+    required:
+    - carModelId
+    - propertyId
+    - value
     type: object
   CarSaleAd-Web-Api_api_dto.CreateCarModelRequest:
     properties:
@@ -379,6 +408,23 @@ definitions:
       items:
         items:
           $ref: '#/definitions/CarSaleAd-Web-Api_api_dto.CarModelPriceHistoryResponse'
+        type: array
+      pageNumber:
+        type: integer
+      totalPages:
+        type: integer
+      totalRows:
+        type: integer
+    type: object
+  CarSaleAd-Web-Api_api_dto.PagedList-CarSaleAd-Web-Api_api_dto_CarModelPropertyResponse:
+    properties:
+      hasNextPage:
+        type: boolean
+      hasPreviousPage:
+        type: boolean
+      items:
+        items:
+          $ref: '#/definitions/CarSaleAd-Web-Api_api_dto.CarModelPropertyResponse'
         type: array
       pageNumber:
         type: integer
@@ -720,6 +766,14 @@ definitions:
         type: number
       priceAt:
         type: string
+    type: object
+  CarSaleAd-Web-Api_api_dto.UpdateCarModelPropertyRequest:
+    properties:
+      value:
+        maxLength: 100
+        type: string
+    required:
+    - value
     type: object
   CarSaleAd-Web-Api_api_dto.UpdateCarModelRequest:
     properties:
@@ -1342,6 +1396,157 @@ paths:
       summary: Get CarModelPriceHistories
       tags:
       - CarModelPriceHistory
+  /v1/car-model-properties/:
+    post:
+      consumes:
+      - application/json
+      description: Create a CarModelProperty
+      parameters:
+      - description: Create a CarModelProperty
+        in: body
+        name: Request
+        required: true
+        schema:
+          $ref: '#/definitions/CarSaleAd-Web-Api_api_dto.CreateCarModelPropertyRequest'
+      responses:
+        "201":
+          description: CarModelProperty response
+          schema:
+            allOf:
+            - $ref: '#/definitions/CarSaleAd-Web-Api_api_helper.BaseHttpResponse'
+            - properties:
+                result:
+                  $ref: '#/definitions/CarSaleAd-Web-Api_api_dto.CarModelPropertyResponse'
+              type: object
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/CarSaleAd-Web-Api_api_helper.BaseHttpResponse'
+      security:
+      - AuthBearer: []
+      summary: Create a CarModelProperty
+      tags:
+      - CarModelProperty
+  /v1/car-model-properties/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a CarModelProperty
+      parameters:
+      - description: Id
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: Response
+          schema:
+            $ref: '#/definitions/CarSaleAd-Web-Api_api_helper.BaseHttpResponse'
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/CarSaleAd-Web-Api_api_helper.BaseHttpResponse'
+      security:
+      - AuthBearer: []
+      summary: Delete a CarModelProperty
+      tags:
+      - CarModelProperty
+    get:
+      consumes:
+      - application/json
+      description: Get a CarModelProperty
+      parameters:
+      - description: Id
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: CarModelProperty Response
+          schema:
+            allOf:
+            - $ref: '#/definitions/CarSaleAd-Web-Api_api_helper.BaseHttpResponse'
+            - properties:
+                result:
+                  $ref: '#/definitions/CarSaleAd-Web-Api_api_dto.CarModelPropertyResponse'
+              type: object
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/CarSaleAd-Web-Api_api_helper.BaseHttpResponse'
+      security:
+      - AuthBearer: []
+      summary: Get a CarModelProperty
+      tags:
+      - CarModelProperty
+    put:
+      consumes:
+      - application/json
+      description: Update a CarModelProperty
+      parameters:
+      - description: Id
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Update a CarModelProperty
+        in: body
+        name: Request
+        required: true
+        schema:
+          $ref: '#/definitions/CarSaleAd-Web-Api_api_dto.UpdateCarModelPropertyRequest'
+      responses:
+        "200":
+          description: CarModelProperty response
+          schema:
+            allOf:
+            - $ref: '#/definitions/CarSaleAd-Web-Api_api_helper.BaseHttpResponse'
+            - properties:
+                result:
+                  $ref: '#/definitions/CarSaleAd-Web-Api_api_dto.CarModelPropertyResponse'
+              type: object
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/CarSaleAd-Web-Api_api_helper.BaseHttpResponse'
+      security:
+      - AuthBearer: []
+      summary: Update a CarModelProperty
+      tags:
+      - CarModelProperty
+  /v1/car-model-properties/get-by-filter:
+    post:
+      consumes:
+      - application/json
+      description: Get CarModelProperties
+      parameters:
+      - description: Request
+        in: body
+        name: Request
+        required: true
+        schema:
+          $ref: '#/definitions/CarSaleAd-Web-Api_api_dto.PaginationInputWithFilter'
+      responses:
+        "200":
+          description: CarModelProperty Response
+          schema:
+            allOf:
+            - $ref: '#/definitions/CarSaleAd-Web-Api_api_helper.BaseHttpResponse'
+            - properties:
+                result:
+                  $ref: '#/definitions/CarSaleAd-Web-Api_api_dto.PagedList-CarSaleAd-Web-Api_api_dto_CarModelPropertyResponse'
+              type: object
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/CarSaleAd-Web-Api_api_helper.BaseHttpResponse'
+      security:
+      - AuthBearer: []
+      summary: Get CarModelProperties
+      tags:
+      - CarModelProperty
   /v1/car-model-years/:
     post:
       consumes:
