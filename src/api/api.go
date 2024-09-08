@@ -95,6 +95,11 @@ func InitServer(cfg *config.Config) {
 		carModelPriceHistories := v1.Group("/car-model-price-histories", middlewares.Authentication(cfg), middlewares.Authorization([]string{"admin"}))
 		routers.CarModelPriceHistory(carModelPriceHistories, cfg)
 
+		carModelImages := v1.Group("/car-model-images", middlewares.Authentication(cfg), middlewares.Authorization([]string{"admin"}))
+		routers.CarModelImage(carModelImages, cfg)
+
+		r.Static("/static", "./uploads")
+
 	}
 	//Swagger
 	RegisterSwagger(r, cfg)
