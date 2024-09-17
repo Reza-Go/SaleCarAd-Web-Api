@@ -101,6 +101,9 @@ func InitServer(cfg *config.Config) {
 		carModelProperties := v1.Group("/car-model-properties", middlewares.Authentication(cfg), middlewares.Authorization([]string{"admin"}))
 		routers.CarModelProperty(carModelProperties, cfg)
 
+		carModelComments := v1.Group("/car-model-comments", middlewares.Authentication(cfg), middlewares.Authorization([]string{"admin", "default"}))
+		routers.CarModelComment(carModelComments, cfg)
+
 		r.Static("/static", "./uploads")
 
 	}
