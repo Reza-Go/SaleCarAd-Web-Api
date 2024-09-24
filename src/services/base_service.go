@@ -8,6 +8,7 @@ import (
 	"CarSaleAd-Web-Api/data/db"
 	"CarSaleAd-Web-Api/data/models"
 	"CarSaleAd-Web-Api/pkg/logging"
+	"CarSaleAd-Web-Api/pkg/metrics"
 	"CarSaleAd-Web-Api/pkg/service_errors"
 	"context"
 	"database/sql"
@@ -45,11 +46,13 @@ func (s *BaseService[T, Tc, Tu, Tr]) Create(ctx context.Context, req *Tc) (*Tr, 
 	if err != nil {
 		tx.Rollback()
 		s.Logger.Error(logging.Postgres, logging.Insert, err.Error(), nil)
+		metrics.DbCall.WithLabelValues(reflect.TypeOf(*model).String(), "Create", "Failed").Inc()
 		return nil, err
 	}
 	tx.Commit()
 
 	bm, _ := common.TypeConvertor[models.BaseModel](model)
+	metrics.DbCall.WithLabelValues(reflect.TypeOf(*model).String(), "Create", "Success").Inc()
 	return s.GetById(ctx, bm.Id)
 }
 
@@ -72,9 +75,13 @@ func (s *BaseService[T, Tc, Tu, Tr]) Update(ctx context.Context, id int, req *Tu
 		Error; err != nil {
 		tx.Rollback()
 		s.Logger.Error(logging.Postgres, logging.Update, err.Error(), nil)
+		metrics.DbCall.WithLabelValues(reflect.TypeOf(*model).String(), "Update", "Failed").Inc()
+
 		return nil, err
 	}
 	tx.Commit()
+	metrics.DbCall.WithLabelValues(reflect.TypeOf(*model).String(), "Update", "Success").Inc()
+
 	return s.GetById(ctx, id)
 
 }
@@ -100,9 +107,13 @@ func (s *BaseService[T, Tc, Tu, Tr]) Delete(ctx context.Context, id int) error {
 		RowsAffected; cnt == 0 {
 		tx.Rollback()
 		s.Logger.Error(logging.Postgres, logging.Update, service_errors.RecordNotFound, nil)
+		metrics.DbCall.WithLabelValues(reflect.TypeOf(*model).String(), "Delete", "Failed").Inc()
+
 		return &service_errors.ServiceError{EndUserMessage: service_errors.RecordNotFound}
 	}
 	tx.Commit()
+	metrics.DbCall.WithLabelValues(reflect.TypeOf(*model).String(), "Delete", "Success").Inc()
+
 	return nil
 }
 
@@ -116,8 +127,11 @@ func (s *BaseService[T, Tc, Tu, Tr]) GetById(ctx context.Context, id int) (*Tr, 
 		First(model).
 		Error
 	if err != nil {
+		metrics.DbCall.WithLabelValues(reflect.TypeOf(*model).String(), "GetById", "Failed").Inc()
+
 		return nil, err
 	}
+	metrics.DbCall.WithLabelValues(reflect.TypeOf(*model).String(), "GetById", "Success").Inc()
 
 	return common.TypeConvertor[Tr](model)
 
@@ -242,5 +256,12 @@ func NewPagedList[T any](items *[]T, count int64, pageNumber int, pageSize int64
 	return pl
 }
 func (s *BaseService[T, Tc, Tu, Tr]) GetByFilter(ctx context.Context, req *dto.PaginationInputWithFilter) (*dto.PagedList[Tr], error) {
-	return Paginate[T, Tr](req, s.Preloads, s.Database)
+	res, err := Paginate[T, Tr](req, s.Preloads, s.Database)
+	if err != nil {
+		metrics.DbCall.WithLabelValues(reflect.TypeOf(*new(T)).String(), "GetByFilter", "Failed").Inc()
+		return nil, err
+	}
+	metrics.DbCall.WithLabelValues(reflect.TypeOf(*new(T)).String(), "GetByFilter", "Success").Inc()
+
+	return res, nil
 }

@@ -7,11 +7,14 @@ import (
 	"CarSaleAd-Web-Api/config"
 	"CarSaleAd-Web-Api/docs"
 	"CarSaleAd-Web-Api/pkg/logging"
+	"CarSaleAd-Web-Api/pkg/metrics"
 	"fmt"
 
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
 	"github.com/go-playground/validator/v10"
+	"github.com/prometheus/client_golang/prometheus"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 )
@@ -22,6 +25,9 @@ func InitServer(cfg *config.Config) {
 
 	r := gin.New()
 	//r1 := gin.Default()
+
+	//Prometheus
+	RegisterPrometheus()
 
 	//validations
 	val, ok := binding.Validator.Engine().(*validator.Validate)
@@ -38,6 +44,7 @@ func InitServer(cfg *config.Config) {
 
 	//middlewares
 	r.Use(middlewares.DefaultStructuredLogger(cfg))
+	r.Use(middlewares.Prometheus())
 	r.Use(gin.Logger(), gin.Recovery() /*middlewares.TestMiddleware()*/, middlewares.LimitByRequest())
 
 	//Routes
@@ -106,6 +113,8 @@ func InitServer(cfg *config.Config) {
 
 		r.Static("/static", "./uploads")
 
+		r.GET("/metrics", gin.WrapH(promhttp.Handler()))
+
 	}
 	//Swagger
 	RegisterSwagger(r, cfg)
@@ -125,4 +134,16 @@ func RegisterSwagger(r *gin.Engine, cfg *config.Config) {
 	docs.SwaggerInfo.Schemes = []string{"http"}
 
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+}
+
+func RegisterPrometheus() {
+	err := prometheus.Register(metrics.DbCall)
+	if err != nil {
+		logger.Error(logging.Prometheus, logging.StartUp, err.Error(), nil)
+	}
+
+	err = prometheus.Register(metrics.HttpDuration)
+	if err != nil {
+		logger.Error(logging.Prometheus, logging.StartUp, err.Error(), nil)
+	}
 }
