@@ -51,6 +51,7 @@ scrape_configs:
             "web-api1:5000",
             "web-api2:5000",
             "192.168.1.36:5005",
+            "192.168.1.36:5010",
           ]
 
   - job_name: "node-exporter"

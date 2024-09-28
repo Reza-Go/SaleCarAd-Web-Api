@@ -17,12 +17,13 @@ import (
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
+	
 )
 
 var logger = logging.NewLogger(config.GetConfig())
 
 func InitServer(cfg *config.Config) {
-
+	//gin.SetMode(cfg.Server.Runmode)
 	r := gin.New()
 	//r1 := gin.Default()
 
