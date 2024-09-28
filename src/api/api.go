@@ -119,7 +119,7 @@ func InitServer(cfg *config.Config) {
 	//Swagger
 	RegisterSwagger(r, cfg)
 
-	err := r.Run(fmt.Sprintf(":%s", cfg.Server.Port))
+	err := r.Run(fmt.Sprintf(":%s", cfg.Server.InternalPort))
 	if err != nil {
 		logger.Error(logging.General, logging.StartUp, err.Error(), nil)
 	}
@@ -130,7 +130,7 @@ func RegisterSwagger(r *gin.Engine, cfg *config.Config) {
 	docs.SwaggerInfo.Description = "Sell your Car"
 	docs.SwaggerInfo.Version = "1.0"
 	docs.SwaggerInfo.BasePath = "/api"
-	docs.SwaggerInfo.Host = fmt.Sprintf("localhost:%s", cfg.Server.Port)
+	docs.SwaggerInfo.Host = fmt.Sprintf("localhost:%s", cfg.Server.ExternalPort)
 	docs.SwaggerInfo.Schemes = []string{"http"}
 
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))

@@ -1,6 +1,6 @@
 module CarSaleAd-Web-Api
 
-go 1.21.4
+go 1.23
 
 require (
 	github.com/didip/tollbooth v4.0.2+incompatible
